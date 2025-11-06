@@ -5,19 +5,15 @@ import adminRoutes from './routes/adminRouter.js'
 import cors from 'cors'
 import dotenv from 'dotenv'
 import connectDb from './utils/mongoDB.js'
-dotenv.config({})
-connectDb()
+
+dotenv.config()
 
 const app = express()
 
-
-
 app.use(express.json())
-app.use(express.urlencoded({ extended: true}))
+app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser())
 
-
-// CORS
 app.use(cors({
   origin: 'https://clg-img.vercel.app',
   credentials: true,
@@ -25,26 +21,33 @@ app.use(cors({
   allowedHeaders: ['Content-Type', 'Authorization']
 }))
 
-// Handle preflight for ALL routes
-app.options('*', cors())  // ← THIS IS THE MISSING PIECE
+app.options('*', cors())
 
 app.use((req, res, next) => {
-  console.log(`[${new Date().toISOString()}] ${req.method} ${req.url} from ${req.ip}`);
-  next();
-});
+  console.log(`[${new Date().toISOString()}] ${req.method} ${req.url} from ${req.ip}`)
+  next()
+})
 
 app.get('/check', (req, res) => {
-  console.log('TEST API HIT! 🚀');
-  res.json({ message: 'Backend woke up! Ready to rock!' });
-});
-
+  res.json({ message: 'Backend woke up! Ready to rock!' })
+})
 
 app.use('/api/v1', userRoutes)
-app.use("/api/v1/admin", adminRoutes);
+app.use('/api/v1/admin', adminRoutes)
 
+const PORT = process.env.PORT || 8000
 
-const PORT = process.env.PORT || 8000;
-app.listen(PORT, '0.0.0.0',()=>{
-    console.log(`server is running on http://localhost:${PORT}`);
-    
-})
+// START SERVER ONLY AFTER DB CONNECTS
+const startServer = async () => {
+  try {
+    await connectDb()  // ← Wait for DB
+    app.listen(PORT, '0.0.0.0', () => {
+      console.log(`Server running on port ${PORT}`)
+    })
+  } catch (error) {
+    console.error('Failed to start server:', error)
+    process.exit(1)
+  }
+}
+
+startServer()
