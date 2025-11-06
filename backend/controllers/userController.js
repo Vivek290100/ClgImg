@@ -81,12 +81,13 @@ export const login = async (req, res) => {
       profilePhoto: user.profilePhoto,
       bio: user.bio,
     };
+    const isProd = process.env.NODE_ENV === "production" || process.env.RENDER === "true";
 
     return res
       .status(200)
       .cookie("token", token, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
+        secure: isProd,
         sameSite: "strict",
         maxAge: 90 * 24 * 60 * 60 * 1000,
       })
