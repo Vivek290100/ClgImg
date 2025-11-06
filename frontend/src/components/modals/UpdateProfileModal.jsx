@@ -22,19 +22,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { departments } from "@/utils/departments";
 
-const departments = [
-  "Computer Science",
-  "Electrical Engineering",
-  "Mechanical Engineering",
-  "Civil Engineering",
-  "Biotechnology",
-  "Management",
-  "Arts",
-  "Science",
-  "Faculty",
-  "Staff",
-];
 
 const UpdateProfileModal = ({ open, setOpen }) => {
   const { user } = useSelector((s) => s.auth);
