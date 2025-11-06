@@ -15,8 +15,8 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true}))
 app.use(cookieParser())
 app.use(cors({
-  origin: true, 
-  credentials: true 
+  origin: 'https://clg-img.vercel.app', 
+  credentials: true
 }));
 
 app.use((req, res, next) => {
@@ -34,9 +34,9 @@ app.use('/api/v1', userRoutes)
 app.use("/api/v1/admin", adminRoutes);
 
 
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 8000;
+connectDb()
 app.listen(PORT, '0.0.0.0',()=>{
-    connectDb()
     console.log(`server is running on http://localhost:${PORT}`);
     
 })
