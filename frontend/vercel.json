@@ -3,6 +3,6 @@
     { "source": "/(.*)", "destination": "/index.html" }
   ],
   "redirects": [
-    { "source": "/api/(.*)", "destination": "https://clg-img-api.onrender.com/api/$1" }
+    { "source": "/api/(.*)", "destination": "https://clgimg.onrender.com//api/$1" }
   ]
 }
