@@ -53,25 +53,47 @@ export const register = async (req, res) => {
 export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
+
+    // ---- 1. Input validation ------------------------------------------------
     if (!email || !password) {
-      return res.status(400).json({ message: "Email and password required", success: false });
+      return res.status(400).json({
+        message: "Email and password required",
+        success: false,
+      });
     }
 
+    // ---- 2. Find user (include password field) -----------------------------
     const user = await User.findOne({ email }).select("+password");
     if (!user) {
-      return res.status(401).json({ message: "Invalid credentials", success: false });
+      return res.status(401).json({
+        message: "Invalid credentials",
+        success: false,
+      });
     }
 
+    // ---- 3. Blocked account -------------------------------------------------
     if (!user.isActive) {
-      return res.status(403).json({ message: "Account is blocked", success: false });
+      return res.status(403).json({
+        message: "Account is blocked",
+        success: false,
+      });
     }
 
-    if (!(await bcrypt.compare(password, user.password))) {
-      return res.status(401).json({ message: "Invalid credentials", success: false });
+    // ---- 4. Password check --------------------------------------------------
+    const passwordOk = await bcrypt.compare(password, user.password);
+    if (!passwordOk) {
+      return res.status(401).json({
+        message: "Invalid credentials",
+        success: false,
+      });
     }
 
-    const token = jwt.sign({ userId: user._id }, process.env.SECRET_KEY, { expiresIn: "90d" });
+    // ---- 5. JWT -------------------------------------------------------------
+    const token = jwt.sign({ userId: user._id }, process.env.SECRET_KEY, {
+      expiresIn: "90d",
+    });
 
+    // ---- 6. Safe user payload -----------------------------------------------
     const userResponse = {
       _id: user._id,
       fullName: user.fullName,
@@ -81,15 +103,18 @@ export const login = async (req, res) => {
       profilePhoto: user.profilePhoto,
       bio: user.bio,
     };
+
+    // ---- 7. Cookie options ---------------------------------------------------
     const isProd = process.env.NODE_ENV === "production" || process.env.RENDER === "true";
 
-    return res
+    res
       .status(200)
       .cookie("token", token, {
         httpOnly: true,
-        secure: isProd,
-        sameSite: "strict",
+        secure: isProd, 
+        sameSite: isProd ? "none" : "lax",
         maxAge: 90 * 24 * 60 * 60 * 1000,
+        path: "/",
       })
       .json({
         message: `Welcome back, ${user.fullName}`,
