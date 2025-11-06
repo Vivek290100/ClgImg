@@ -6,6 +6,7 @@ import cors from 'cors'
 import dotenv from 'dotenv'
 import connectDb from './utils/mongoDB.js'
 dotenv.config({})
+connectDb()
 
 const app = express()
 
@@ -43,7 +44,6 @@ app.use("/api/v1/admin", adminRoutes);
 
 
 const PORT = process.env.PORT || 8000;
-connectDb()
 app.listen(PORT, '0.0.0.0',()=>{
     console.log(`server is running on http://localhost:${PORT}`);
     
