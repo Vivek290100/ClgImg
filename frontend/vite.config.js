@@ -4,10 +4,11 @@ import path from 'path'
 
 export default defineConfig({
   plugins: [react()],
+  base: '/',                   
   resolve: {
     alias: {
       '@': path.resolve(__dirname, 'src'),
     },
   },
-  base: '/'  
+  assetsInclude: ['**/*.png', '**/*.jpg', '**/*.jpeg', '**/*.svg']
 })
