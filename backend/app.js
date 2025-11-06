@@ -14,10 +14,18 @@ const app = express()
 app.use(express.json())
 app.use(express.urlencoded({ extended: true}))
 app.use(cookieParser())
+
+
+// CORS
 app.use(cors({
-  origin: 'https://clg-img.vercel.app', 
-  credentials: true
-}));
+  origin: 'https://clg-img.vercel.app',
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}))
+
+// Handle preflight for ALL routes
+app.options('*', cors())  // ← THIS IS THE MISSING PIECE
 
 app.use((req, res, next) => {
   console.log(`[${new Date().toISOString()}] ${req.method} ${req.url} from ${req.ip}`);
