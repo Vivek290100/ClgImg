@@ -1,6 +1,6 @@
 import express from 'express';
 
-import {login, register, logout, updateProfile, createPost, getUserProfile, getExplorePosts, likePost, getPostById, getPostComments, addComment, deletePost, followUser, unfollowUser, getFollowers, getFollowing, submitFeedback} from '../controllers/userController.js';
+import {login, register, logout, updateProfile, createPost, getUserProfile, getExplorePosts, likePost, getPostById, getPostComments, addComment, deletePost, followUser, unfollowUser, getFollowers, getFollowing, submitFeedback, getUserCount, getTrendingPosts} from '../controllers/userController.js';
 import isAuthenticated from '../middlewares/isAuthenticated.js';
 import { multipleUpload, singleUpload } from '../middlewares/multer.js';
 
@@ -27,6 +27,9 @@ router.post("/unfollow/:id", isAuthenticated, unfollowUser);
 router.get("/followers/:id", isAuthenticated, getFollowers);
 router.get("/following/:id", isAuthenticated, getFollowing);
 router.post("/feedback", isAuthenticated, submitFeedback);
+
+router.get('/user-count', getUserCount);
+router.get('/trending-posts', getTrendingPosts);
 
 
 

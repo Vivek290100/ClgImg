@@ -30,7 +30,6 @@ const PostDetailPage = () => {
   const [comment, setComment] = useState("");
   const [sending, setSending] = useState(false);
   const [comments, setComments] = useState([]);
-  console.log("ppp",comments);
   
   const [commentPage, setCommentPage] = useState(1);
   const [hasMoreComments, setHasMoreComments] = useState(true);

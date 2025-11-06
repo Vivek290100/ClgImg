@@ -74,22 +74,18 @@ const AdminDashboard = () => {
         const users = usersRes.data.users || [];
         const feedbacks = feedbackRes.data.feedbacks || [];
 
-        // Debug: Log user data to inspect fields
-        console.log("Users:", users.map(u => ({
+        users.map(u => ({
           _id: u._id,
           fullName: u.fullName,
           email: u.email,
           department: u.department,
           createdAt: u.createdAt,
-        })));
-        console.log("Feedbacks:", feedbacks);
+        }))
 
-        // Metrics calculations
         const totalUsers = users.length;
         const activeUsers = users.filter((u) => u.isActive).length;
         const blockedUsers = totalUsers - activeUsers;
 
-        // Feedback types
         const feedbackTypesCount = feedbacks.reduce((acc, f) => {
           acc[f.type] = (acc[f.type] || 0) + 1;
           return acc;
@@ -99,7 +95,6 @@ const AdminDashboard = () => {
           value,
         }));
 
-        // Department distribution
         const departmentCount = users.reduce((acc, u) => {
           const dept = u.department || "Unknown";
           acc[dept] = (acc[dept] || 0) + 1;
@@ -109,9 +104,7 @@ const AdminDashboard = () => {
           name,
           value,
         }));
-        console.log("Department Distribution:", departmentDistribution);
 
-        // User activity (top 5 users by posts)
         const userActivity = users
           .sort((a, b) => (b.postsCount || 0) - (a.postsCount || 0))
           .slice(0, 5)
@@ -121,17 +114,14 @@ const AdminDashboard = () => {
             followers: u.followersCount || 0,
           }));
 
-        // Recent users
         const recentUsers = users
           .map((u) => ({
             ...u,
-            createdAt: u.createdAt ? new Date(u.createdAt) : new Date(), // Fallback to current date
+            createdAt: u.createdAt ? new Date(u.createdAt) : new Date(),
           }))
           .sort((a, b) => b.createdAt - a.createdAt)
           .slice(0, 5);
-        console.log("Recent Users:", recentUsers);
 
-        // Recent feedback
         const recentFeedback = feedbacks
           .filter((f) => f.createdAt)
           .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
@@ -171,7 +161,6 @@ const AdminDashboard = () => {
     <div className="p-3 sm:p-4 md:p-6">
       <h1 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6">Admin Dashboard</h1>
 
-      {/* Metrics Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6">
         <Card className="border border-border">
           <CardHeader className="p-3">
@@ -207,7 +196,6 @@ const AdminDashboard = () => {
         </Card>
       </div>
 
-      {/* Charts */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-4 mb-6">
         <Card className="border border-border">
           <CardHeader className="p-3">
@@ -299,8 +287,7 @@ const AdminDashboard = () => {
         </Card>
       </div>
 
-      {/* Recent Activity */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-4">
+      {/* <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-4">
         <Card className="border border-border">
           <CardHeader className="p-3">
             <CardTitle className="text-sm sm:text-base">Recent Users</CardTitle>
@@ -498,7 +485,7 @@ const AdminDashboard = () => {
             )}
           </CardContent>
         </Card>
-      </div>
+      </div> */}
     </div>
   );
 };

@@ -318,7 +318,7 @@ const Explore = () => {
   return (
     <div className="min-h-screen bg-background pb-20 md:pb-0">
       {/* HEADER */}
-      <header className="sticky top-0 z-40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b">
+      <header className="sticky top-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b">
         <div className="container mx-auto px-4 py-4 flex flex-col sm:flex-row gap-3 items-center">
           {/* Search */}
           <div className="relative flex-1 max-w-md">

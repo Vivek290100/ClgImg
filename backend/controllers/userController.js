@@ -1,4 +1,3 @@
-// controllers/authController.js
 import { User } from "../models/userModel.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
@@ -10,12 +9,11 @@ import { Comment } from "../models/commentsModel.js";
 import { Follow } from "../models/follow.js";
 import { Feedback } from "../models/feedbackModel.js";
 
-/* ---------- REGISTER ---------- */
 export const register = async (req, res) => {
   try {
     const { fullName, email, password, } = req.body;
 
-    if (!fullName || !email || !password ) {
+    if (!fullName || !email || !password) {
       return res.status(400).json({ message: "Required fields missing", success: false });
     }
 
@@ -37,7 +35,7 @@ export const register = async (req, res) => {
       fullName,
       email,
       password: hashedPassword,
-      department:"",
+      department: "",
       role: "user",
       profilePhoto,
     });
@@ -52,7 +50,6 @@ export const register = async (req, res) => {
   }
 };
 
-/* ---------- LOGIN ---------- */
 export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -65,12 +62,10 @@ export const login = async (req, res) => {
       return res.status(401).json({ message: "Invalid credentials", success: false });
     }
 
-    // Check if user is blocked
     if (!user.isActive) {
       return res.status(403).json({ message: "Account is blocked", success: false });
     }
 
-    // Verify password
     if (!(await bcrypt.compare(password, user.password))) {
       return res.status(401).json({ message: "Invalid credentials", success: false });
     }
@@ -106,7 +101,6 @@ export const login = async (req, res) => {
   }
 };
 
-/* ---------- LOGOUT ---------- */
 export const logout = (req, res) => {
   return res
     .status(200)
@@ -114,7 +108,6 @@ export const logout = (req, res) => {
     .json({ message: "Logged out", success: true });
 };
 
-/* ---------- UPDATE PROFILE ---------- */
 export const updateProfile = async (req, res) => {
   try {
     const { fullName, email, bio, department } = req.body;
@@ -160,11 +153,9 @@ export const updateProfile = async (req, res) => {
 export const createPost = async (req, res) => {
   try {
     const { caption, department, year } = req.body;
-    console.log("req.body",req.body);
-    
+
     const userId = req.id;
 
-    // Validate required fields
     if (!department || !year) {
       return res.status(400).json({
         message: "Department and year are required",
@@ -193,7 +184,6 @@ export const createPost = async (req, res) => {
       });
     }
 
-    // Upload to Cloudinary
     const mediaPromises = req.files.map(async (file) => {
       const fileUri = getDataUri(file);
       const result = await cloudinary.uploader.upload(fileUri.content, {
@@ -210,7 +200,6 @@ export const createPost = async (req, res) => {
 
     const media = await Promise.all(mediaPromises);
 
-    // Create post
     const post = await Post.create({
       user: userId,
       caption: caption || "",
@@ -236,28 +225,24 @@ export const createPost = async (req, res) => {
 };
 
 
-// controllers/authController.js
 export const getUserProfile = async (req, res) => {
   try {
     const { id } = req.params;
-    const currentUserId = req.id; // This MUST exist from auth middleware
+    const currentUserId = req.id;
 
     const followersCount = await Follow.countDocuments({ following: id });
-const followingCount = await Follow.countDocuments({ follower: id });
-const isFollowing = await Follow.findOne({ follower: currentUserId, following: id });
+    const followingCount = await Follow.countDocuments({ follower: id });
+    const isFollowing = await Follow.findOne({ follower: currentUserId, following: id });
 
-    // Find user
     const user = await User.findById(id).select("-password");
     if (!user) {
       return res.status(404).json({ message: "User not found", success: false });
     }
 
-    // Find posts
     const posts = await Post.find({ user: id, isDeleted: false })
       .sort({ createdAt: -1 })
       .lean();
 
-    // Format posts with isLiked
     const formattedPosts = posts.map(post => ({
       _id: post._id,
       primaryImage: post.media?.[0]?.url || null,
@@ -267,15 +252,14 @@ const isFollowing = await Follow.findOne({ follower: currentUserId, following: i
       isLiked: currentUserId ? post.likes?.includes(currentUserId) : false,
     }));
 
-// In getUserProfile
-return res.status(200).json({
-  success: true,
-  user,
-  posts: formattedPosts,
-  isFollowing: !!isFollowing,
-  followers: followersCount,
-  following: followingCount,
-});
+    return res.status(200).json({
+      success: true,
+      user,
+      posts: formattedPosts,
+      isFollowing: !!isFollowing,
+      followers: followersCount,
+      following: followingCount,
+    });
   } catch (error) {
     console.error("getUserProfile error:", error);
     return res.status(500).json({ message: "Server error", success: false });
@@ -297,7 +281,7 @@ export const getExplorePosts = async (req, res) => {
     const limitNum = Number(limit);
     const skip = (pageNum - 1) * limitNum;
 
-    const filter = {isDeleted: false};
+    const filter = { isDeleted: false };
     if (department) filter.department = department;
     if (year) filter.year = year;
 
@@ -376,10 +360,10 @@ export const getExplorePosts = async (req, res) => {
     const hasMore = skip + posts.length < total;
 
     console.log("BACKEND QUERY:", { page, limit, search, department, year });
-console.log("FILTER:", filter);
-console.log("TOTAL POSTS:", total);
-console.log("POSTS RETURNED:", posts.length);
-console.log("HAS MORE:", skip + posts.length < total);
+    console.log("FILTER:", filter);
+    console.log("TOTAL POSTS:", total);
+    console.log("POSTS RETURNED:", posts.length);
+    console.log("HAS MORE:", skip + posts.length < total);
 
     return res.status(200).json({
       success: true,
@@ -392,22 +376,18 @@ console.log("HAS MORE:", skip + posts.length < total);
   }
 };
 
-/* ---------- LIKE POST (TOGGLE) ---------- */
 export const likePost = async (req, res) => {
   try {
     const userId = req.id;
     const { postId } = req.params;
 
-    // Check if post exists and is not deleted
     const post = await Post.findOne({ _id: postId, isDeleted: false });
     if (!post) {
       return res.status(404).json({ message: "Post not found or deleted", success: false });
     }
 
-    // Check if already liked
     const alreadyLiked = post.likes.includes(userId);
 
-    // Toggle like atomically
     const updateOp = alreadyLiked
       ? { $pull: { likes: userId } }
       : { $push: { likes: userId } };
@@ -437,7 +417,7 @@ export const getPostById = async (req, res) => {
 
     const post = await Post.findOne({
       _id: postId,
-      isDeleted: false,               
+      isDeleted: false,
     })
       .populate("user", "fullName username profilePhoto")
       .populate({
@@ -450,7 +430,6 @@ export const getPostById = async (req, res) => {
       return res.status(404).json({ message: "Post not found", success: false });
     }
 
-    // Format response
     const formattedPost = {
       _id: post._id,
       caption: post.caption,
@@ -479,7 +458,6 @@ export const getPostById = async (req, res) => {
   }
 };
 
-/* ---------- GET POST COMMENTS (PAGINATED) ---------- */
 export const getPostComments = async (req, res) => {
   try {
     const { postId } = req.params;
@@ -512,7 +490,6 @@ export const getPostComments = async (req, res) => {
   }
 };
 
-/* ---------- ADD COMMENT ---------- */
 export const addComment = async (req, res) => {
   try {
     const { postId } = req.params;
@@ -536,7 +513,6 @@ export const addComment = async (req, res) => {
 
     await comment.populate("user", "fullName profilePhoto");
 
-    // Add to post comments array
     await Post.findByIdAndUpdate(postId, {
       $push: { comments: comment._id },
     });
@@ -551,7 +527,6 @@ export const addComment = async (req, res) => {
   }
 };
 
-/* ---------- DELETE POST (soft delete) ---------- */
 export const deletePost = async (req, res) => {
   try {
     const { postId } = req.params;
@@ -566,7 +541,6 @@ export const deletePost = async (req, res) => {
       return res.status(403).json({ message: "Unauthorized", success: false });
     }
 
-    // 1. Delete media from Cloudinary
     if (post.media && post.media.length) {
       await Promise.all(
         post.media.map(m =>
@@ -575,12 +549,10 @@ export const deletePost = async (req, res) => {
       );
     }
 
-    // 2. Mark as deleted (soft delete)
     post.isDeleted = true;
-    post.media = [];                 // optional – clear URLs
+    post.media = [];
     await post.save();
 
-    // 3. Delete comments (optional – you may keep them)
     await Comment.deleteMany({ post: postId });
 
     return res.status(200).json({
@@ -616,7 +588,6 @@ export const followUser = async (req, res) => {
   }
 };
 
-// UNFOLLOW USER
 export const unfollowUser = async (req, res) => {
   try {
     const targetId = req.params.id;
@@ -658,7 +629,6 @@ export const getFollowers = async (req, res) => {
   }
 };
 
-// GET FOLLOWING
 export const getFollowing = async (req, res) => {
   try {
     const { id } = req.params;
@@ -673,7 +643,7 @@ export const getFollowing = async (req, res) => {
       fullName: follow.following.fullName,
       username: follow.following.username,
       profilePhoto: follow.following.profilePhoto,
-      isFollowing: true, // Since these are users the target is following
+      isFollowing: true,
     }));
 
     res.status(200).json({ success: true, users });
@@ -705,6 +675,91 @@ export const submitFeedback = async (req, res) => {
     return res.status(201).json({ message: "Feedback submitted successfully", success: true });
   } catch (err) {
     console.error("Submit feedback error:", err);
+    return res.status(500).json({ message: "Server error", success: false });
+  }
+};
+
+// controllers/authController.js
+export const getUserCount = async (req, res) => {
+  try {
+    const totalUsers = await User.countDocuments({ isActive: true });
+    return res.status(200).json({
+      success: true,
+      totalUsers,
+    });
+  } catch (error) {
+    console.error("Get user count error:", error);
+    return res.status(500).json({ message: "Server error", success: false });
+  }
+};
+
+export const getTrendingPosts = async (req, res) => {
+  try {
+    const threeDaysAgo = new Date(Date.now() - 3 * 24 * 60 * 60 * 1000);
+
+    const totalPosts = await Post.countDocuments({
+      isDeleted: false,
+      createdAt: { $gte: threeDaysAgo },
+    });
+
+    const posts = await Post.aggregate([
+      {
+        $match: {
+          isDeleted: false,
+          createdAt: { $gte: threeDaysAgo },
+        },
+      },
+      {
+        $addFields: {
+          likesCount: { $size: { $ifNull: ["$likes", []] } },
+        },
+      },
+      {
+        $lookup: {
+          from: "users",
+          localField: "user",
+          foreignField: "_id",
+          as: "user",
+        },
+      },
+      {
+        $unwind: { path: "$user", preserveNullAndEmptyArrays: true },
+      },
+      {
+        $project: {
+          caption: 1,
+          media: 1,
+          likes: 1,
+          likesCount: 1,
+          comments: 1,
+          createdAt: 1,
+          department: 1,
+          year: 1,
+          "user.fullName": 1,
+          "user.profilePhoto": 1,
+        },
+      },
+      {
+        $sort: { likesCount: -1, createdAt: -1 }, // Primary: most likes, Secondary: newest
+      },
+      { $limit: 3 },
+    ]);
+
+
+    posts.map((p) => ({
+      id: p._id,
+      caption: p.caption,
+      likesCount: p.likesCount,
+      createdAt: p.createdAt,
+      user: p.user?.fullName || "Unknown",
+    }))
+
+    return res.status(200).json({
+      success: true,
+      posts,
+    });
+  } catch (error) {
+    console.error("Get trending posts error:", error.message, error.stack);
     return res.status(500).json({ message: "Server error", success: false });
   }
 };

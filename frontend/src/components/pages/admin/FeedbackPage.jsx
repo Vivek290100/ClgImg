@@ -32,7 +32,6 @@ const FeedbackPage = () => {
         const { data } = await axios.get(`${ADMIN_API_ENDPOINT}/feedbacks`, {
           withCredentials: true,
         });
-        console.log("Feedback data:", data);
         if (data.success) {
           setFeedbacks(data.feedbacks);
         } else {

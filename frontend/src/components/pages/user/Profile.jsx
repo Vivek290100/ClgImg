@@ -152,11 +152,11 @@ const ProfilePage = () => {
         <div className="container mx-auto px-4 py-8">
           <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
             <Avatar className="w-28 h-28 md:w-36 md:h-36 ring-4 ring-background shadow-xl">
-              <AvatarImage src={profile.profilePhoto} />
-              <AvatarFallback className="text-3xl font-bold bg-gradient-to-br from-yellow-400 to-purple-600 text-white">
-                {initials}
-              </AvatarFallback>
-            </Avatar>
+  <AvatarImage src={profile.profilePhoto} className="object-cover" />
+  <AvatarFallback className="text-3xl font-bold bg-gradient-to-br from-yellow-400 to-purple-600 text-white">
+    {initials}
+  </AvatarFallback>
+</Avatar>
 
             <div className="flex-1 text-center md:text-left space-y-4">
               <div className="flex flex-col md:flex-row items-center md:items-start justify-between gap-4">
@@ -195,7 +195,7 @@ const ProfilePage = () => {
                         </>
                       )}
                     </Button>
-                    <Button variant="outline" className="rounded-full">
+                    <Button variant="outline" className="rounded-full pointer-events-none blur-sm">
                       <MessageCircle className="w-4 h-4 mr-2" />
                       Message
                     </Button>

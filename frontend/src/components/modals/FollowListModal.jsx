@@ -2,14 +2,11 @@
 import React, { useState, useEffect } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { UserPlus, UserMinus } from "lucide-react";
 import axios from "axios";
 import { USER_API_ENDPOINT } from "@/utils/constant";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
 
 const FollowListModal = ({ open, setOpen, type, userId }) => {
   const [list, setList] = useState([]);
@@ -17,7 +14,6 @@ const FollowListModal = ({ open, setOpen, type, userId }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const { user: currentUser } = useSelector((s) => s.auth);
 
   useEffect(() => {
     const fetchList = async () => {
@@ -45,30 +41,12 @@ const FollowListModal = ({ open, setOpen, type, userId }) => {
 
   useEffect(() => {
     const filtered = list.filter((user) =>
-      (user.fullName?.toLowerCase().includes(searchQuery.toLowerCase()) || 
+      (user.fullName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
        user.username?.toLowerCase().includes(searchQuery.toLowerCase()) ||
        user.email?.toLowerCase().includes(searchQuery.toLowerCase()))
     );
     setFilteredList(filtered);
   }, [searchQuery, list]);
-
-  const handleFollowToggle = async (targetId, isFollowing) => {
-    const endpoint = isFollowing
-      ? `${USER_API_ENDPOINT}/unfollow/${targetId}`
-      : `${USER_API_ENDPOINT}/follow/${targetId}`;
-
-    try {
-      await axios.post(endpoint, {}, { withCredentials: true });
-      setList((prev) =>
-        prev.map((user) =>
-          user._id === targetId ? { ...user, isFollowing: !isFollowing } : user
-        )
-      );
-      toast.success(isFollowing ? "Unfollowed" : "Following");
-    } catch (err) {
-      toast.error("Failed to update follow status");
-    }
-  };
 
   // Helper function to generate initials
   const getInitials = (fullName, email) => {
@@ -129,30 +107,9 @@ const FollowListModal = ({ open, setOpen, type, userId }) => {
                       </Avatar>
                       <div>
                         <p className="font-semibold">{user.fullName || "Unknown User"}</p>
+                        <p className="text-xs text-muted-foreground">{user.email || "N/A"}</p>
                       </div>
                     </div>
-                    {user._id !== currentUser._id && (
-                      <Button
-                        variant={user.isFollowing ? "outline" : "default"}
-                        size="sm"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleFollowToggle(user._id, user.isFollowing);
-                        }}
-                      >
-                        {user.isFollowing ? (
-                          <>
-                            <UserMinus className="w-4 h-4 mr-1" />
-                            Unfollow
-                          </>
-                        ) : (
-                          <>
-                            <UserPlus className="w-4 h-4 mr-1" />
-                            Follow
-                          </>
-                        )}
-                      </Button>
-                    )}
                   </div>
                 ))
               )}

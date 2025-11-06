@@ -73,7 +73,6 @@ const UserLayout = ({ children }) => {
     { icon: FiHome, label: "Home", to: "/" },
     { icon: FiSearch, label: "Explore", to: "/explore" },
     { icon: FiCamera, label: "Upload", to: "/upload" },
-    { icon: FiBookmark, label: "Saved", to: "/saved" },
     { icon: FiUser, label: "Profile", to: `/profile/${user?._id}` },
     { icon: FiSettings, label: "Settings", to: "/settings" },
   ];

@@ -94,10 +94,8 @@ export const unblockUser = async (req, res) => {
 };
 
 export const getAllFeedbacks = async (req, res) => {
-    console.log("feeeed");
     
   try {
-    // Fetch all feedbacks and populate the user field with relevant details
     const feedbacks = await Feedback.find()
       .populate("user", "fullName email profilePhoto")
       .sort({ createdAt: -1 }); // Sort by newest first

@@ -1,15 +1,17 @@
-// src/utils/departments.js
 export const departments = [
-  "Computer Science",
-  "Electrical Engineering",
-  "Mechanical Engineering",
-  "Civil Engineering",
-  "Biotechnology",
-  "Management",
-  "Arts",
-  "Science",
-  "Faculty",
-  "Staff",
+  "BSc CS",
+  "BSc IT",
+  "BSc Physics",
+  "BSc MicroBiology",
+  "BSc Botony",
+  "BCom",
+  "BCom IT",
+  "BCom CA",
+  "BBA",
+  "BBA CA",
+  "BA Lit",
+  "Geography",
+  "BCA",
 ];
 
 export const years = ["1st Year", "2nd Year", "3rd Year"];
