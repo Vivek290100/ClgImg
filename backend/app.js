@@ -35,7 +35,7 @@ app.use("/api/v1/admin", adminRoutes);
 
 
 const PORT = process.env.PORT;
-app.listen(PORT, ()=>{
+app.listen(PORT, '0.0.0.0',()=>{
     connectDb()
     console.log(`server is running on http://localhost:${PORT}`);
     
