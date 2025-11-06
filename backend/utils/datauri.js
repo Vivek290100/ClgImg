@@ -1,4 +1,3 @@
-//C:\Users\vivek_laxvnt1\Desktop\ApexArrow\backend\utils\datauri.js
 import DataUriParser from "datauri/parser.js"
 import path from "path"
 

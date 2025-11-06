@@ -1,10 +1,8 @@
-// src/controllers/adminController.js
 import { User } from "../models/userModel.js";
 import { Follow } from "../models/follow.js";
 import { Post } from "../models/postModel.js";
 import { Feedback } from "../models/feedbackModel.js";
 
-// GET ALL NON-ADMIN USERS
 export const getAllUsers = async (req, res) => {
   try {
     const currentUserId = req.id;
@@ -98,7 +96,7 @@ export const getAllFeedbacks = async (req, res) => {
   try {
     const feedbacks = await Feedback.find()
       .populate("user", "fullName email profilePhoto")
-      .sort({ createdAt: -1 }); // Sort by newest first
+      .sort({ createdAt: -1 });
 
     return res.status(200).json({
       success: true,
