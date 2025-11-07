@@ -37,13 +37,12 @@ export default function SignUpPage() {
     data.append("role", formData.role);
     if (formData.profilePhoto) data.append("file", formData.profilePhoto);
 
+    dispatch(setLoading(true));
     try {
-      dispatch(setLoading(true));
       const res = await axios.post(`${USER_API_ENDPOINT}/register`, data, {
         headers: { "Content-Type": "multipart/form-data" },
         withCredentials: true,
       });
-
       if (res.data.success) {
         toast.success(res.data.message);
         navigate("/login");
@@ -56,111 +55,84 @@ export default function SignUpPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col lg:flex-row bg-background text-foreground">
+    <div className="min-h-screen flex flex-col lg:flex-row bg-card">
       {/* Left: Hero Text */}
-      <div className="lg:w-1/2 flex items-center justify-center p-8 bg-gradient-to-tr from-pink-800 via-purple-800 to-indigo-900">
-        <div className="max-w-lg text-left space-y-6 animate-fadeIn">
-          <h1 className="text-5xl lg:text-6xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-yellow-300 via-pink-400 to-purple-500">
-            Join the
-            <br />
-            <span className="text-white">Campus Revolution</span>
+      <div className="lg:w-1/2 flex items-center justify-center p-8 lg:p-12 bg-gradient-to-tl from-yellow-400 via-purple-500 to-pink-500">
+        <div className="text-center space-y-6 max-w-md">
+          <h1 className="text-5xl lg:text-6xl font-bold text-white">
+            Join CampusSnap
           </h1>
-          <p className="text-lg lg:text-xl text-gray-100 leading-relaxed">
-            One app. Endless memories.  
-            From freshers to farewell —  
-            <span className="font-bold text-yellow-300">Snap it all.</span>
+          <p className="text-xl text-white/90">
+            One app. Endless memories.
           </p>
-
-          <div className="grid grid-cols-3 gap-4 mt-8 text-center">
-            <div>
-              <div className="text-3xl font-bold text-pink-300">📸</div>
-              <div className="text-xs text-gray-200 mt-1">Snap</div>
-            </div>
-            <div>
-              <div className="text-3xl font-bold text-yellow-300">🎉</div>
-              <div className="text-xs text-gray-200 mt-1">Celebrate</div>
-            </div>
-            <div>
-              <div className="text-3xl font-bold text-purple-300">👥</div>
-              <div className="text-xs text-gray-200 mt-1">Connect</div>
-            </div>
+          <div className="flex justify-center gap-6 text-white">
+            <div>Camera Snap</div>
+            <div>Party Celebrate</div>
+            <div>Friends Connect</div>
           </div>
-
-          <p className="text-sm text-gray-300 italic mt-10 border-l-4 border-yellow-400 pl-4">
-            "Finally, an app that gets college life." – Aarav, CSE '26
-          </p>
         </div>
       </div>
 
       {/* Right: Signup Form */}
-      <div className="flex-1 flex items-center justify-center p-6 lg:p-12 bg-background">
-        <div className="w-full max-w-md">
-          <div className="text-center mb-8">
-            <h2 className="text-3xl font-bold">Create Your Snap ID</h2>
-            <p className="text-muted-foreground mt-2">Start your campus story today</p>
+      <div className="flex-1 flex items-center justify-center p-6 lg:p-12 bg-card">
+        <div className="w-full max-w-md space-y-8">
+          <div className="text-center">
+            <h2 className="text-3xl font-bold text-foreground">Create Your Account</h2>
+            <p className="text-muted-foreground mt-2">Start sharing your story</p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-5">
             <input
               name="fullName"
               type="text"
-              placeholder="Your Full Name"
               required
-              className="w-full px-4 py-3 rounded-lg border border-input bg-background focus:ring-2 focus:ring-purple-500"
+              placeholder="Your Full Name"
+              className="w-full px-5 py-3 rounded-xl border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-purple-500"
               onChange={handleChange}
             />
             <input
               name="email"
               type="email"
-              placeholder="you@college.edu"
               required
-              className="w-full px-4 py-3 rounded-lg border border-input bg-background focus:ring-2 focus:ring-purple-500"
+              placeholder="you@college.edu"
+              className="w-full px-5 py-3 rounded-xl border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-purple-500"
               onChange={handleChange}
             />
             <input
               name="password"
               type="password"
-              placeholder="Choose a strong password"
               required
-              className="w-full px-4 py-3 rounded-lg border border-input bg-background focus:ring-2 focus:ring-purple-500"
+              placeholder="Choose a strong password"
+              className="w-full px-5 py-3 rounded-xl border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-purple-500"
               onChange={handleChange}
             />
 
-            <div className="border-2 border-dashed border-purple-500 rounded-xl p-6 text-center">
+            <div className="border-2 border-dashed border-purple-500 rounded-xl p-6 text-center cursor-pointer hover:border-purple-400 transition">
               <input
-                id="profilePhoto"
+                id="file"
                 type="file"
                 accept="image/*"
                 className="hidden"
                 onChange={handleFileChange}
               />
-              <label
-                htmlFor="profilePhoto"
-                className="cursor-pointer text-purple-400 hover:text-purple-300 font-medium"
-              >
-                {formData.profilePhoto ? "✅ Photo Selected" : "📷 Upload Profile Pic"}
+              <label htmlFor="file" className="text-purple-400 font-medium">
+                {formData.profilePhoto ? "Photo Selected" : "Upload Profile Pic"}
               </label>
-              <p className="text-xs text-gray-500 mt-2">Make a great first snap!</p>
+              <p className="text-xs text-muted-foreground mt-1">Make a great first snap!</p>
             </div>
 
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-4 font-bold text-white bg-gradient-to-r from-yellow-400 via-purple-500 to-pink-500 rounded-xl hover:shadow-2xl transition-all disabled:opacity-70 flex items-center justify-center gap-3"
+              className="w-full py-4 rounded-xl font-bold text-white bg-gradient-to-r from-yellow-400 via-purple-500 to-pink-500 hover:shadow-xl transition-all disabled:opacity-70 flex items-center justify-center gap-2"
             >
-              {loading ? (
-                <Loader className="h-5 w-5 animate-spin" />
-              ) : (
-                <>
-                  <span>🚀 Join CampusSnap</span>
-                </>
-              )}
+              {loading ? <Loader className="h-5 w-5 animate-spin" /> : "Join CampusSnap"}
             </button>
           </form>
 
-          <p className="text-center text-sm text-muted-foreground mt-6">
+          <p className="text-center text-sm text-muted-foreground">
             Already snapping?{" "}
-            <Link to="/login" className="text-purple-400 font-bold hover:underline">
+            <Link to="/login" className="font-bold text-purple-400 hover:underline">
               Login Here
             </Link>
           </p>
