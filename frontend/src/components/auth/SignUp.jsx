@@ -20,13 +20,8 @@ export default function SignUpPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleFileChange = (e) => {
-    setFormData({ ...formData, profilePhoto: e.target.files[0] });
-  };
+  const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
+  const handleFileChange = (e) => setFormData({ ...formData, profilePhoto: e.target.files[0] });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -56,16 +51,16 @@ export default function SignUpPage() {
 
   return (
     <div className="min-h-screen flex flex-col lg:flex-row bg-card">
-      {/* Left: Hero Text */}
-      <div className="lg:w-1/2 flex items-center justify-center p-8 lg:p-12 bg-gradient-to-tl from-yellow-400 via-purple-500 to-pink-500">
-        <div className="text-center space-y-6 max-w-md">
-          <h1 className="text-5xl lg:text-6xl font-bold text-white">
+      {/* LEFT: Hero */}
+      <div className="w-full lg:w-1/2 flex items-center justify-center p-6 sm:p-8 lg:p-12 bg-gradient-to-tl from-yellow-400 via-purple-500 to-pink-500">
+        <div className="w-full max-w-xs sm:max-w-sm space-y-5 text-center text-white">
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight">
             Join CampusSnap
           </h1>
-          <p className="text-xl text-white/90">
+          <p className="text-lg sm:text-xl opacity-90">
             One app. Endless memories.
           </p>
-          <div className="flex justify-center gap-6 text-white">
+          <div className="flex flex-wrap justify-center gap-4 text-sm sm:text-base">
             <div>Camera Snap</div>
             <div>Party Celebrate</div>
             <div>Friends Connect</div>
@@ -73,21 +68,21 @@ export default function SignUpPage() {
         </div>
       </div>
 
-      {/* Right: Signup Form */}
-      <div className="flex-1 flex items-center justify-center p-6 lg:p-12 bg-card">
+      {/* RIGHT: Form */}
+      <div className="flex-1 flex items-center justify-center p-6 sm:p-8 lg:p-12 bg-card">
         <div className="w-full max-w-md space-y-8">
           <div className="text-center">
-            <h2 className="text-3xl font-bold text-foreground">Create Your Account</h2>
+            <h2 className="text-2xl sm:text-3xl font-bold text-foreground">Create Your Account</h2>
             <p className="text-muted-foreground mt-2">Start sharing your story</p>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-5">
+          <form onSubmit={handleSubmit} className="space-y-4">
             <input
               name="fullName"
               type="text"
               required
               placeholder="Your Full Name"
-              className="w-full px-5 py-3 rounded-xl border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="w-full px-4 py-3 rounded-xl border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-purple-500"
               onChange={handleChange}
             />
             <input
@@ -95,7 +90,7 @@ export default function SignUpPage() {
               type="email"
               required
               placeholder="you@college.edu"
-              className="w-full px-5 py-3 rounded-xl border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="w-full px-4 py-3 rounded-xl border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-purple-500"
               onChange={handleChange}
             />
             <input
@@ -103,18 +98,12 @@ export default function SignUpPage() {
               type="password"
               required
               placeholder="Choose a strong password"
-              className="w-full px-5 py-3 rounded-xl border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="w-full px-4 py-3 rounded-xl border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-purple-500"
               onChange={handleChange}
             />
 
-            <div className="border-2 border-dashed border-purple-500 rounded-xl p-6 text-center cursor-pointer hover:border-purple-400 transition">
-              <input
-                id="file"
-                type="file"
-                accept="image/*"
-                className="hidden"
-                onChange={handleFileChange}
-              />
+            <div className="border-2 border-dashed border-purple-500 rounded-xl p-5 text-center cursor-pointer hover:border-purple-400 transition">
+              <input id="file" type="file" accept="image/*" className="hidden" onChange={handleFileChange} />
               <label htmlFor="file" className="text-purple-400 font-medium">
                 {formData.profilePhoto ? "Photo Selected" : "Upload Profile Pic"}
               </label>

@@ -15,9 +15,7 @@ export default function LoginPage() {
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+  const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -41,43 +39,43 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen flex flex-col lg:flex-row bg-card">
-      {/* Left: Hero Text */}
-      <div className="lg:w-1/2 flex items-center justify-center p-8 lg:p-12 bg-gradient-to-br from-yellow-400 via-purple-500 to-pink-500">
-        <div className="text-center space-y-6 max-w-md">
-          <h1 className="text-5xl lg:text-6xl font-bold text-white">
+      {/* LEFT: Hero – Stacks on mobile */}
+      <div className="w-full lg:w-1/2 flex items-center justify-center p-6 sm:p-8 lg:p-12 bg-gradient-to-br from-yellow-400 via-purple-500 to-pink-500">
+        <div className="w-full max-w-xs sm:max-w-sm space-y-5 text-center text-white">
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight">
             Welcome Back
           </h1>
-          <p className="text-xl text-white/90">
+          <p className="text-lg sm:text-xl opacity-90">
             Your campus. Your stories. Your squad.
           </p>
-          <div className="flex justify-center gap-8 text-white">
+          <div className="grid grid-cols-2 gap-6 text-sm sm:text-base">
             <div>
-              <div className="text-4xl font-bold">10K+</div>
-              <div className="text-sm opacity-90">Students</div>
+              <div className="text-3xl sm:text-4xl font-bold">10K+</div>
+              <div className="opacity-80">Students</div>
             </div>
             <div>
-              <div className="text-4xl font-bold">500+</div>
-              <div className="text-sm opacity-90">Events</div>
+              <div className="text-3xl sm:text-4xl font-bold">500+</div>
+              <div className="opacity-80">Events</div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Right: Login Form */}
-      <div className="flex-1 flex items-center justify-center p-6 lg:p-12 bg-card">
+      {/* RIGHT: Form */}
+      <div className="flex-1 flex items-center justify-center p-6 sm:p-8 lg:p-12 bg-card">
         <div className="w-full max-w-md space-y-8">
           <div className="text-center">
-            <h2 className="text-3xl font-bold text-foreground">Login to CampusSnap</h2>
+            <h2 className="text-2xl sm:text-3xl font-bold text-foreground">Login to CampusSnap</h2>
             <p className="text-muted-foreground mt-2">Continue your campus journey</p>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-5">
+          <form onSubmit={handleSubmit} className="space-y-4">
             <input
               name="email"
               type="email"
               required
               placeholder="you@college.edu"
-              className="w-full px-5 py-3 rounded-xl border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="w-full px-4 py-3 rounded-xl border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-purple-500"
               onChange={handleChange}
             />
             <input
@@ -85,7 +83,7 @@ export default function LoginPage() {
               type="password"
               required
               placeholder="••••••••"
-              className="w-full px-5 py-3 rounded-xl border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="w-full px-4 py-3 rounded-xl border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-purple-500"
               onChange={handleChange}
             />
 
