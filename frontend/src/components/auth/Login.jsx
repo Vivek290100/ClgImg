@@ -43,21 +43,11 @@ export default function LoginPage() {
       <div className="w-full lg:w-1/2 flex items-center justify-center p-6 sm:p-8 lg:p-12 bg-card">
         <div className="w-full max-w-xs sm:max-w-sm space-y-5 text-center text-white">
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight">
-            Welcome Back
+            Welcome
           </h1>
           <p className="text-lg sm:text-xl opacity-90">
             Your campus. Your stories. Your squad.
           </p>
-          <div className="grid grid-cols-2 gap-6 text-sm sm:text-base">
-            <div>
-              <div className="text-3xl sm:text-4xl font-bold">10K+</div>
-              <div className="opacity-80">Students</div>
-            </div>
-            <div>
-              <div className="text-3xl sm:text-4xl font-bold">500+</div>
-              <div className="opacity-80">Events</div>
-            </div>
-          </div>
         </div>
       </div>
 
@@ -92,7 +82,7 @@ export default function LoginPage() {
               disabled={loading}
               className="w-full py-4 rounded-xl font-bold text-white bg-card hover:shadow-xl transition-all disabled:opacity-70 flex items-center justify-center gap-2"
             >
-              {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : "Snap Back In"}
+              {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : "LogIn"}
             </button>
           </form>
 

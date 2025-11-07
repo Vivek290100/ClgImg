@@ -60,11 +60,6 @@ export default function SignUpPage() {
           <p className="text-lg sm:text-xl opacity-90">
             One app. Endless memories.
           </p>
-          <div className="flex flex-wrap justify-center gap-4 text-sm sm:text-base">
-            <div>Camera Snap</div>
-            <div>Party Celebrate</div>
-            <div>Friends Connect</div>
-          </div>
         </div>
       </div>
 
@@ -115,7 +110,7 @@ export default function SignUpPage() {
               disabled={loading}
               className="w-full py-4 rounded-xl font-bold text-white bg-card hover:shadow-xl transition-all disabled:opacity-70 flex items-center justify-center gap-2"
             >
-              {loading ? <Loader className="h-5 w-5 animate-spin" /> : "Join CampusSnap"}
+              {loading ? <Loader className="h-5 w-5 animate-spin" /> : "SignUp"}
             </button>
           </form>
 
