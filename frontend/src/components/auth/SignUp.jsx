@@ -52,7 +52,7 @@ export default function SignUpPage() {
   return (
     <div className="min-h-screen flex flex-col lg:flex-row bg-card">
       {/* LEFT: Hero */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center p-6 sm:p-8 lg:p-12 bg-gradient-to-tl from-yellow-400 via-purple-500 to-pink-500">
+      <div className="w-full lg:w-1/2 flex items-center justify-center p-6 sm:p-8 lg:p-12 bg-card">
         <div className="w-full max-w-xs sm:max-w-sm space-y-5 text-center text-white">
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight">
             Join CampusSnap
@@ -113,7 +113,7 @@ export default function SignUpPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-4 rounded-xl font-bold text-white bg-gradient-to-r from-yellow-400 via-purple-500 to-pink-500 hover:shadow-xl transition-all disabled:opacity-70 flex items-center justify-center gap-2"
+              className="w-full py-4 rounded-xl font-bold text-white bg-card hover:shadow-xl transition-all disabled:opacity-70 flex items-center justify-center gap-2"
             >
               {loading ? <Loader className="h-5 w-5 animate-spin" /> : "Join CampusSnap"}
             </button>
