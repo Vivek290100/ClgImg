@@ -40,3 +40,13 @@
 .read-the-docs {
   color: #888;
 }
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+.animate-bounce {
+  animation: bounce 2s infinite;
+}
+.delay-200 { animation-delay: 200ms; }
+.delay-500 { animation-delay: 500ms; }

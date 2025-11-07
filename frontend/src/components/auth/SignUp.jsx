@@ -30,7 +30,6 @@ export default function SignUpPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     const data = new FormData();
     data.append("fullName", formData.fullName);
     data.append("email", formData.email);
@@ -50,7 +49,6 @@ export default function SignUpPage() {
         navigate("/login");
       }
     } catch (error) {
-      console.log(error);
       toast.error(error.response?.data?.message || "Signup failed");
     } finally {
       dispatch(setLoading(false));
@@ -58,119 +56,108 @@ export default function SignUpPage() {
   };
 
   return (
-    <div className="flex flex-col lg:flex-row py-9 max-h-screen bg-card">
-      <div className="lg:w-1/2 flex items-center justify-center p-8 bg-card">
-        <img
-          src="/signup.png"
-          alt="3D rendering of cartoon-like man working on computer"
-          className="w-full h-auto max-w-2xl rounded-full"
-        />
+    <div className="min-h-screen flex flex-col lg:flex-row bg-gradient-to-tr from-yellow-50 via-purple-50 to-pink-50">
+      {/* Left: Fun Text Hero */}
+      <div className="lg:w-1/2 flex items-center justify-center p-8 lg:p-12">
+        <div className="max-w-lg text-center lg:text-left space-y-8">
+          <div>
+            <h1 className="text-5xl lg:text-7xl font-black text-gray-900">
+              Ready to
+            </h1>
+            <h2 className="text-6xl lg:text-8xl font-extrabold bg-gradient-to-r from-purple-600 to-pink-500 bg-clip-text text-transparent">
+              SNAP IT?
+            </h2>
+          </div>
+          <p className="text-xl lg:text-2xl text-gray-700 font-medium">
+            Join thousands of students already <br />
+            <span className="text-purple-600 font-bold">snapping their campus life!</span>
+          </p>
+          <div className="grid grid-cols-2 gap-4 mt-10">
+            {["🎉 Freshers", "📸 Moments", "👥 Clubs", "🌟 Stories"].map((item, i) => (
+              <div
+                key={i}
+                className="bg-white/90 backdrop-blur p-4 rounded-2xl shadow-lg text-center transform hover:scale-110 transition"
+                style={{ animationDelay: `${i * 100}ms` }}
+              >
+                <p className="text-3xl mb-1">{item.split(" ")[0]}</p>
+                <p className="text-sm font-semibold text-gray-700">{item.split(" ")[1]}</p>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
 
-      <div className="lg:w-1/2 flex flex-col justify-center p-8 mt-8 bg-card">
-        <div className="max-w-md w-full mx-auto">
-          <form className="space-y-4 bg-card" onSubmit={handleSubmit}>
-            <div>
-              <label htmlFor="fullName" className="block text-sm font-medium text-gray-400">
-                Full Name
-              </label>
+      {/* Right: Signup Form */}
+      <div className="flex-1 flex items-center justify-center p-6 lg:p-12 bg-white/80 backdrop-blur-lg">
+        <div className="w-full max-w-md">
+          <div className="text-center mb-8">
+            <h2 className="text-4xl font-bold text-gray-900">Create Account</h2>
+            <p className="text-gray-600 mt-2">One snap away from campus fame</p>
+          </div>
+
+          <form onSubmit={handleSubmit} className="space-y-5">
+            <input
+              name="fullName"
+              type="text"
+              placeholder="Your Cool Name"
+              required
+              className="w-full px-5 py-4 rounded-xl border border-gray-300 focus:ring-4 focus:ring-purple-300 focus:border-purple-500 transition text-gray-900"
+              onChange={handleChange}
+            />
+
+            <input
+              name="email"
+              type="email"
+              placeholder="you@college.ac.in"
+              required
+              className="w-full px-5 py-4 rounded-xl border border-gray-300 focus:ring-4 focus:ring-purple-300 focus:border-purple-500 transition text-gray-900"
+              onChange={handleChange}
+            />
+
+            <input
+              name="password"
+              type="password"
+              placeholder="Secret Password"
+              required
+              className="w-full px-5 py-4 rounded-xl border border-gray-300 focus:ring-4 focus:ring-purple-300 focus:border-purple-500 transition text-gray-900"
+              onChange={handleChange}
+            />
+
+            <div className="border-2 border-dashed border-purple-300 rounded-xl p-6 text-center cursor-pointer hover:border-purple-500 transition">
               <input
-                id="fullName"
-                name="fullName"
-                type="text"
-                required
-                className="mt-1 block w-full px-3 py-2 border text-black border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                onChange={handleChange}
+                id="profilePhoto"
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={handleFileChange}
               />
-            </div>
-
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-400">
-                Email address
+              <label htmlFor="profilePhoto" className="cursor-pointer">
+                <p className="text-4xl mb-2">📸</p>
+                <p className="text-purple-600 font-semibold">
+                  {formData.profilePhoto ? "Photo Selected!" : "Tap to Add Selfie"}
+                </p>
               </label>
-              <input
-                id="email"
-                name="email"
-                type="email"
-                required
-                className="mt-1 block w-full px-3 py-2 border text-black border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                onChange={handleChange}
-              />
             </div>
 
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-400">
-                Password
-              </label>
-              <input
-                id="password"
-                name="password"
-                type="password"
-                required
-                className="mt-1 block w-full px-3 py-2 border text-black border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                onChange={handleChange}
-              />
-            </div>
-
-
-            <div>
-              <label className="block text-sm font-medium text-gray-400">
-                Profile Photo
-              </label>
-              <div className="mt-1 flex justify-center px-6 pt-1 pb-3 border-2 border-gray-300 border-dashed rounded-md">
-                <div className="space-y-1 text-center">
-                  <svg
-                    className="mx-auto h-12 w-12 text-gray-400"
-                    stroke="currentColor"
-                    fill="none"
-                    viewBox="0 0 48 48"
-                    aria-hidden="true"
-                  >
-                    <path
-                      d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
-                      strokeWidth={2}
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                  <div className="flex text-sm text-gray-400">
-                    <label
-                      htmlFor="profilePhoto"
-                      className="py-1 px-2 relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500"
-                    >
-                      <span>Upload</span>
-                      <input
-                        id="profilePhoto"
-                        name="profilePhoto"
-                        type="file"
-                        className="sr-only"
-                        onChange={handleFileChange}
-                      />
-                    </label>
-                    <p className="pl-1">your photo</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div>
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full py-5 font-bold text-xl text-white bg-gradient-to-r from-yellow-400 via-purple-500 to-pink-500 rounded-xl hover:shadow-2xl transform hover:scale-105 transition disabled:opacity-70"
+            >
               {loading ? (
-                <button className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gradient-to-r from-yellow-400 to-violet-700 hover:bg-gradient-to-r">
-                  <Loader className="mr-2 h-5 w-5 animate-spin" />
-                </button>
+                <Loader className="mx-auto h-7 w-7 animate-spin" />
               ) : (
-                <button
-                  type="submit"
-                  className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gradient-to-r from-yellow-400 to-violet-700 hover:bg-gradient-to-r"
-                >
-                  Signup
-                </button>
+                "Join CampusSnap! 🎉"
               )}
-              <span className="text-sm text-violet-500">
-                <Link to="/login">already have an account? Login</Link>
-              </span>
-            </div>
+            </button>
           </form>
+
+          <p className="text-center mt-6 text-gray-600">
+            Already snapping?{" "}
+            <Link to="/login" className="text-purple-600 font-bold hover:underline">
+              Log In
+            </Link>
+          </p>
         </div>
       </div>
     </div>
