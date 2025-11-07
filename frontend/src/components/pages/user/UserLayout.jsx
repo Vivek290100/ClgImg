@@ -1,4 +1,3 @@
-// src/components/user/UserLayout.jsx
 import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
@@ -25,7 +24,6 @@ const UserLayout = ({ children }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Axios Interceptor to detect blocked user
   useEffect(() => {
     const interceptor = axios.interceptors.response.use(
       (response) => response,
@@ -37,7 +35,6 @@ const UserLayout = ({ children }) => {
       }
     );
 
-    // Cleanup interceptor on component unmount
     return () => {
       axios.interceptors.response.eject(interceptor);
     };
@@ -62,7 +59,7 @@ const UserLayout = ({ children }) => {
         await persistor.purge();
         navigate("/login", { replace: true });
         toast.success("Logged out");
-        setIsBlocked(false); // Close popup after logout
+        setIsBlocked(false); 
       }
     } catch (e) {
       toast.error(e.response?.data?.message || "Logout failed");
@@ -81,7 +78,6 @@ const UserLayout = ({ children }) => {
     if (isMobile) setSidebarOpen(false);
   };
 
-  // Profile Popover
   const ProfilePopover = () => (
     <Popover>
       <PopoverTrigger asChild>
@@ -127,7 +123,6 @@ const UserLayout = ({ children }) => {
 
   return (
     <div className="flex h-screen bg-background text-foreground overflow-hidden">
-      {/* Blocked User Popup */}
       <Dialog open={isBlocked} onOpenChange={setIsBlocked}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
@@ -149,7 +144,6 @@ const UserLayout = ({ children }) => {
         </DialogContent>
       </Dialog>
 
-      {/* Overlay */}
       {sidebarOpen && isMobile && (
         <div
           className="fixed inset-0 bg-black/50 z-40 md:hidden"
@@ -157,7 +151,6 @@ const UserLayout = ({ children }) => {
         />
       )}
 
-      {/* Sidebar */}
       <aside
         className={`${sidebarOpen ? "translate-x-0" : "-translate-x-full"
           } md:translate-x-0 fixed md:relative z-50
@@ -207,9 +200,7 @@ const UserLayout = ({ children }) => {
         </nav>
       </aside>
 
-      {/* Main Content */}
       <div className="flex-1 flex flex-col">
-        {/* Top Navbar */}
         <header className="bg-card border-b border-border px-4 md:px-6 py-3 flex items-center justify-between sticky top-0 z-10">
           <div className="flex items-center gap-3 flex-1 max-w-xl">
             {isMobile && (

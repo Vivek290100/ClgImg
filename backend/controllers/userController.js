@@ -54,7 +54,6 @@ export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    // ---- 1. Input validation ------------------------------------------------
     if (!email || !password) {
       return res.status(400).json({
         message: "Email and password required",
@@ -62,7 +61,6 @@ export const login = async (req, res) => {
       });
     }
 
-    // ---- 2. Find user (include password field) -----------------------------
     const user = await User.findOne({ email }).select("+password");
     if (!user) {
       return res.status(401).json({
@@ -71,7 +69,6 @@ export const login = async (req, res) => {
       });
     }
 
-    // ---- 3. Blocked account -------------------------------------------------
     if (!user.isActive) {
       return res.status(403).json({
         message: "Account is blocked",
@@ -79,7 +76,6 @@ export const login = async (req, res) => {
       });
     }
 
-    // ---- 4. Password check --------------------------------------------------
     const passwordOk = await bcrypt.compare(password, user.password);
     if (!passwordOk) {
       return res.status(401).json({
@@ -88,12 +84,10 @@ export const login = async (req, res) => {
       });
     }
 
-    // ---- 5. JWT -------------------------------------------------------------
     const token = jwt.sign({ userId: user._id }, process.env.SECRET_KEY, {
       expiresIn: "90d",
     });
 
-    // ---- 6. Safe user payload -----------------------------------------------
     const userResponse = {
       _id: user._id,
       fullName: user.fullName,
@@ -104,7 +98,6 @@ export const login = async (req, res) => {
       bio: user.bio,
     };
 
-    // ---- 7. Cookie options ---------------------------------------------------
     const isProd = process.env.NODE_ENV === "production" || process.env.RENDER === "true";
 
     res
@@ -705,7 +698,6 @@ export const submitFeedback = async (req, res) => {
   }
 };
 
-// controllers/authController.js
 export const getUserCount = async (req, res) => {
   try {
     const totalUsers = await User.countDocuments({ isActive: true });
@@ -766,7 +758,7 @@ export const getTrendingPosts = async (req, res) => {
         },
       },
       {
-        $sort: { likesCount: -1, createdAt: -1 }, // Primary: most likes, Secondary: newest
+        $sort: { likesCount: -1, createdAt: -1 },
       },
       { $limit: 3 },
     ]);

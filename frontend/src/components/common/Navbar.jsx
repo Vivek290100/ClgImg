@@ -1,4 +1,3 @@
-// src/components/common/Navbar.jsx
 import React, { useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Popover, PopoverContent, PopoverTrigger } from "@radix-ui/react-popover";
@@ -75,7 +74,6 @@ const logout = async () => {
 
   return (
     <>
-      {/* BLUR OVERLAY */}
       {isOpen && (
         <div
           className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 transition-opacity duration-300"
@@ -86,7 +84,6 @@ const logout = async () => {
       <nav className="bg-card text-card-foreground fixed w-full z-50 ">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
-            {/* LOGO */}
             <Link to="/" className="flex items-center gap-2">
               <div className="w-10 h-10 bg-gradient-to-br from-yellow-400 via-purple-500 to-pink-500 rounded-xl flex items-center justify-center rotate-3 shadow-lg shadow-purple-500/30">
                 <Camera className="w-6 h-6 text-white -rotate-3" />
@@ -96,7 +93,6 @@ const logout = async () => {
               </span>
             </Link>
 
-            {/* DESKTOP MENU */}
             <div className="hidden md:flex items-center space-x-6">
               {/* {[
                 { to: "/", label: "Home" },
@@ -154,7 +150,6 @@ const logout = async () => {
               )}
             </div>
 
-            {/* MOBILE CONTROLS */}
             <div className="md:hidden flex items-center gap-2">
               <button onClick={toggleTheme} className="p-2 rounded-full hover:bg-accent">
                 {theme === "light" ? <FiMoon size={20} /> : <FiSun size={20} />}
@@ -166,7 +161,6 @@ const logout = async () => {
           </div>
         </div>
 
-        {/* MOBILE DRAWER */}
         {isOpen && (
           <div className="md:hidden bg-card/95 backdrop-blur-sm border-t border-border z-50">
             <div className="px-4 pt-2 pb-3 space-y-1">

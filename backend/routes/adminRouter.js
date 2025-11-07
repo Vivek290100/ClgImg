@@ -1,4 +1,3 @@
-// src/routes/adminRouter.js
 import express from "express";
 import { blockUser, getAllFeedbacks, getAllUsers, unblockUser } from "../controllers/adminController.js";
 import isAuthenticated from "../middlewares/isAuthenticated.js";

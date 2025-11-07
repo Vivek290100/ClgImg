@@ -1,4 +1,3 @@
-// src/components/pages/user/Profile.jsx
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import {
@@ -34,7 +33,7 @@ const ProfilePage = () => {
   const [followersCount, setFollowersCount] = useState(0);
   const [followingCount, setFollowingCount] = useState(0);
   const [open, setOpen] = useState(false);
-  const [followModal, setFollowModal] = useState({ open: false, type: "" }); // NEW
+  const [followModal, setFollowModal] = useState({ open: false, type: "" });
 
   useEffect(() => {
     const fetchProfile = async () => {

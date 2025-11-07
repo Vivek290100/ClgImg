@@ -1,4 +1,3 @@
-// src/components/pages/Home.jsx
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Camera, TrendingUp, Sparkles, Globe } from "lucide-react";
@@ -36,8 +35,8 @@ const Home = () => {
         const formattedPosts = posts.map((post) => ({
           id: post._id,
           user: post.user?.fullName || "Unknown User",
-          profilePhoto: post.user?.profilePhoto || "", // Empty string if no profile photo
-          firstLetter: post.user?.fullName ? post.user.fullName.charAt(0).toUpperCase() : "?", // First letter for fallback
+          profilePhoto: post.user?.profilePhoto || "",
+          firstLetter: post.user?.fullName ? post.user.fullName.charAt(0).toUpperCase() : "?",
           department: post.department || "N/A",
           time: post.createdAt
             ? formatDistanceToNow(new Date(post.createdAt), { addSuffix: true })
@@ -60,7 +59,6 @@ const Home = () => {
 
   return (
     <div className="min-h-screen text-foreground">
-      {/* HERO */}
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 bg-card" />
         <div
@@ -101,7 +99,6 @@ const Home = () => {
         </div>
       </section>
 
-      {/* TRENDING FEED */}
       <section className="py-12 lg:py-16 bg-gradient-to-b from-transparent to-background">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-3 mb-8">
@@ -129,7 +126,7 @@ const Home = () => {
                           src={post.profilePhoto}
                           alt={post.user}
                           className="w-10 h-10 rounded-full object-cover"
-                          onError={(e) => e.target.classList.add("hidden")} // Hide on error to show fallback
+                          onError={(e) => e.target.classList.add("hidden")} 
                         />
                       ) : null}
                       <div
@@ -175,7 +172,6 @@ const Home = () => {
         </div>
       </section>
 
-      {/* CTA */}
       <section className="py-16 lg:py-20 relative overflow-hidden">
         <div className="absolute inset-0 bg-card" />
         <div className="relative max-w-4xl mx-auto px-4 text-center space-y-6">
@@ -196,7 +192,6 @@ const Home = () => {
         </div>
       </section>
 
-      {/* <Footer /> */}
     </div>
   );
 };

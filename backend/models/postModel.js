@@ -1,4 +1,3 @@
-// models/postModel.js
 import mongoose from "mongoose";
 import { departments, years } from "../utils/departments.js";
 

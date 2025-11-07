@@ -1,4 +1,3 @@
-// src/components/common/Footer.jsx
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
@@ -31,7 +30,6 @@ const Footer = () => {
             </div>
           </div>
 
-          {/* Quick Links */}
           <div>
             <h4 className="font-semibold mb-3 text-foreground">Explore</h4>
             <ul className="space-y-2 text-sm text-muted-foreground">
@@ -41,7 +39,6 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Support */}
           <div>
             <h4 className="font-semibold mb-3 text-foreground">Support</h4>
             <ul className="space-y-2 text-sm text-muted-foreground">

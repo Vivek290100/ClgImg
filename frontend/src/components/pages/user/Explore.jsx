@@ -1,4 +1,3 @@
-// src/components/pages/explore/ExplorePage.jsx
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import {
   Search,
@@ -36,7 +35,6 @@ const Explore = () => {
   const [hasMore, setHasMore] = useState(true);
   const [open, setOpen] = useState(false);
 
-  // REFS
   const hasMoreRef = useRef(true);
   const searchRef = useRef("");
   const deptRef = useRef("All Departments");
@@ -46,7 +44,6 @@ const Explore = () => {
   const resetRef = useRef(false);
   const observer = useRef();
 
-  /* ---------------------- FETCH POSTS ---------------------- */
   const fetchPosts = useCallback(async () => {
     if (!user?._id || isLoadingRef.current) return;
 
@@ -103,7 +100,6 @@ const Explore = () => {
     }
   }, [user?._id]);
 
-  /* ---------------------- LIKE POST (TOGGLE) ---------------------- */
   const likePost = useCallback(
     async (postId, e) => {
       e.preventDefault();
@@ -115,7 +111,6 @@ const Explore = () => {
       const wasLiked = post.isLiked;
       const newLikesCount = wasLiked ? post.likes - 1 : post.likes + 1;
 
-      // Optimistic UI update
       setPosts((prev) =>
         prev.map((p) =>
           p._id === postId
@@ -155,7 +150,6 @@ const Explore = () => {
     [posts]
   );
 
-  /* ---------------------- DEBOUNCED SEARCH ---------------------- */
   const debouncedSearch = useCallback(
     debounce((value) => {
       searchRef.current = value;
@@ -168,7 +162,6 @@ const Explore = () => {
 
   const handleSearchChange = (e) => debouncedSearch(e.target.value);
 
-  /* ---------------------- FILTER HANDLERS ---------------------- */
   const setDeptFilter = (dept) => {
     deptRef.current = dept;
     resetRef.current = true;
@@ -191,7 +184,6 @@ const Explore = () => {
     fetchPosts();
   };
 
-  /* ---------------------- INITIAL LOAD ---------------------- */
   useEffect(() => {
     if (user?._id) {
       resetRef.current = true;
@@ -200,7 +192,6 @@ const Explore = () => {
     }
   }, [user?._id, fetchPosts]);
 
-  /* ---------------------- INFINITE SCROLL ---------------------- */
   const lastPostRef = useCallback(
     (node) => {
       if (loading || !hasMoreRef.current || isLoadingRef.current) return;
@@ -217,7 +208,6 @@ const Explore = () => {
     [loading, fetchPosts]
   );
 
-  /* ---------------------- SKELETON & GRID ---------------------- */
   const SkeletonCard = () => (
     <div className="relative aspect-square bg-muted rounded-lg animate-pulse">
       <div className="absolute inset-0 bg-gradient-to-br from-gray-200 to-gray-300" />
@@ -255,7 +245,6 @@ const Explore = () => {
           to={`/post/${post._id}`}
           className="relative group overflow-hidden rounded-lg bg-card border border-border aspect-square transition-all duration-300 hover:shadow-xl hover:scale-[1.02] hover:z-10"
         >
-          {/* Image */}
           <div className="absolute inset-0">
             {post.primaryImage ? (
               <img
@@ -271,7 +260,6 @@ const Explore = () => {
             )}
           </div>
 
-          {/* Multi-image indicator */}
           {isMulti && (
             <div className="absolute top-2 right-2 bg-black/70 backdrop-blur-sm text-white text-xs px-2 py-1 rounded flex items-center gap-1 z-10">
               <ImageIcon className="w-3 h-3" />
@@ -279,7 +267,6 @@ const Explore = () => {
             </div>
           )}
 
-          {/* Always Visible Stats Bar (Mobile + Desktop) */}
           <div className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black/80 via-black/50 to-transparent">
             <div className="flex gap-5 text-white text-sm font-medium">
               <button
@@ -303,7 +290,6 @@ const Explore = () => {
             </div>
           </div>
 
-          {/* Hover-only More Options (Desktop) */}
           <button className="absolute top-2 left-2 opacity-0 group-hover:opacity-100 transition-opacity z-10">
             <div className="p-1.5 bg-black/50 backdrop-blur-sm rounded-full">
               <MoreHorizontal className="w-5 h-5 text-white drop-shadow-md" />
@@ -314,13 +300,10 @@ const Explore = () => {
     });
   };
 
-  /* ---------------------- RENDER ---------------------- */
   return (
     <div className="min-h-screen bg-background pb-20 md:pb-0">
-      {/* HEADER */}
       <header className="sticky top-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b">
         <div className="container mx-auto px-4 py-4 flex flex-col sm:flex-row gap-3 items-center">
-          {/* Search */}
           <div className="relative flex-1 max-w-md">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
             <Input
@@ -331,7 +314,6 @@ const Explore = () => {
             />
           </div>
 
-          {/* Filter */}
           <Popover open={open} onOpenChange={setOpen}>
             <PopoverTrigger asChild>
               <Button variant="outline" size="sm" className="gap-1.5">
@@ -435,14 +417,12 @@ const Explore = () => {
           </div>
         )}
 
-        {/* DEBUG */}
         <div className="col-span-full text-center text-xs text-muted-foreground py-2">
           {/* Page: {pageRef.current} | Posts: {posts.length} | hasMore: {hasMore.toString()} | Loading: {loading.toString()} */}
-          Page: {pageRef.current} | Posts: {posts.length}
+          {/* Page: {pageRef.current} | Posts: {posts.length} */}
         </div>
       </section>
 
-      {/* FAB - Upload Button */}
       <Button
         size="icon"
         className="fixed bottom-6 right-6 md:hidden rounded-full w-14 h-14 shadow-2xl bg-gradient-to-r from-yellow-400 to-purple-600 hover:scale-110 transition-all z-50"

@@ -1,4 +1,3 @@
-// middlewares/multer.js
 import multer from "multer";
 
 const storage = multer.memoryStorage();
@@ -6,7 +5,7 @@ const storage = multer.memoryStorage();
 export const singleUpload = multer({
   storage,
   limits: { fileSize: 50 * 1024 * 1024 }, // 50MB
-}).single("file"); // field name in register/update
+}).single("file");
 
 export const multipleUpload = multer({
   storage,

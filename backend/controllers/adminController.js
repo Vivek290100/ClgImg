@@ -38,7 +38,6 @@ export const getAllUsers = async (req, res) => {
   }
 };
 
-// BLOCK USER
 export const blockUser = async (req, res) => {
   try {
     const { id } = req.params;
@@ -66,7 +65,6 @@ export const blockUser = async (req, res) => {
   }
 };
 
-// UNBLOCK USER
 export const unblockUser = async (req, res) => {
   try {
     const { id } = req.params;

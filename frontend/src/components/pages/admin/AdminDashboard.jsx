@@ -1,4 +1,3 @@
-// src/components/pages/admin/AdminDashboard.jsx
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { ADMIN_API_ENDPOINT } from "@/utils/constant";
@@ -24,7 +23,6 @@ import {
 
 const COLORS = ["#8B5CF6", "#EC4899", "#F59E0B", "#10B981", "#3B82F6", "#EF4444"];
 
-// Utility to validate and format dates
 const formatDate = (date) => {
   try {
     const parsedDate = new Date(date);

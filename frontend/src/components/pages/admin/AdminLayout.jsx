@@ -1,4 +1,3 @@
-// src/components/admin/AdminLayout.jsx
 import { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
@@ -61,7 +60,6 @@ const AdminLayout = ({ children }) => {
 
   return (
     <div className="flex h-screen bg-background text-foreground overflow-hidden">
-      {/* Overlay for mobile */}
       {sidebarOpen && isMobile && (
         <div
           className="fixed inset-0 bg-black/50 z-40 md:hidden"
@@ -69,7 +67,6 @@ const AdminLayout = ({ children }) => {
         />
       )}
 
-      {/* Sidebar */}
       <aside
         className={`${
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
@@ -103,7 +100,6 @@ const AdminLayout = ({ children }) => {
 
         <nav className="flex-1 p-4 space-y-2 overflow-y-auto">
           {menuItems.map((item) => {
-            // Exact match for /admin, partial match for others
             const isActive = item.to === "/admin" ? location.pathname === "/admin" : location.pathname.startsWith(item.to);
             return (
               <Link

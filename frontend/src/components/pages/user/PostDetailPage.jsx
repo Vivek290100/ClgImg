@@ -1,4 +1,3 @@
-// src/components/pages/post/PostDetailPage.jsx
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { formatDistanceToNow } from "date-fns";
@@ -15,7 +14,6 @@ import { Input } from "@/components/ui/input";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Badge } from "@/components/ui/badge";
 
-// Helper: Get first letter from full name
 const getInitial = (name) => {
   return name?.trim()?.[0]?.toUpperCase() || "U";
 };
@@ -248,7 +246,6 @@ const PostDetailPage = () => {
           <p className="text-xs text-muted-foreground">{timeAgo}</p>
         </div>
 
-        {/* IMAGE CAROUSEL */}
         <div className="relative bg-black">
           {images.length > 0 ? (
             <div
@@ -300,7 +297,6 @@ const PostDetailPage = () => {
           )}
         </div>
 
-        {/* Like & Comment Bar */}
         <div className="p-4 border-b bg-background">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
@@ -323,7 +319,6 @@ const PostDetailPage = () => {
           </div>
         </div>
 
-        {/* Comment Input */}
         <div className="p-4 bg-background border-b sticky top-12 z-40">
           <form onSubmit={sendComment} className="flex gap-2">
             <Input
@@ -343,7 +338,6 @@ const PostDetailPage = () => {
           </form>
         </div>
 
-    {/* COMMENTS */}
 <div className="bg-background">
   {comments.length === 0 ? (
     <p className="text-center text-muted-foreground py-8">
@@ -353,7 +347,6 @@ const PostDetailPage = () => {
     <div className="divide-y">
       {comments.map((c) => (
         <div key={c._id} className="p-4 flex gap-3">
-          {/* Avatar */}
           <Link to={`/profile/${c.user._id}`} className="flex-shrink-0">
             <Avatar className="w-10 h-10 ring-2 ring-offset-2 ring-purple-500/20 hover:ring-purple-500 transition">
               <AvatarImage
@@ -368,7 +361,6 @@ const PostDetailPage = () => {
             </Avatar>
           </Link>
 
-          {/* Comment content */}
           <div className="flex-1 min-w-0">
             <Link
               to={`/profile/${c.user._id}`}

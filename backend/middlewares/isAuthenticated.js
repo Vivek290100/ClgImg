@@ -18,7 +18,6 @@ const isAuthenticated = async (req, res, next) => {
       return res.status(404).json({ message: "User not found", success: false });
     }
 
-    // Check if user is blocked
     if (!user.isActive) {
       return res.status(403).json({ 
         message: "Your account is blocked. Please log out.", 
@@ -29,7 +28,6 @@ const isAuthenticated = async (req, res, next) => {
 
     req.id = decoded.userId;
 
-    // Check role if requiredRole is provided by ProtectedRoute
     if (req.requiredRole && user.role !== req.requiredRole) {
       return res.status(403).json({ message: "Unauthorized: Admin access required", success: false });
     }

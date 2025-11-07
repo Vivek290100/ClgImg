@@ -1,4 +1,3 @@
-// src/components/pages/admin/FeedbackPage.jsx
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { ADMIN_API_ENDPOINT } from "@/utils/constant";
@@ -104,7 +103,6 @@ const FeedbackPage = () => {
           ))}
         </div>
       ) : (
-        // Desktop/Tablet: Table layout
         <div className="overflow-x-auto">
           <Table className="min-w-full">
             <TableHeader>

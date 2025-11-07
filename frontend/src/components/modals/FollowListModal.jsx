@@ -1,4 +1,3 @@
-// src/components/modals/FollowListModal.jsx
 import React, { useState, useEffect } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
@@ -48,7 +47,6 @@ const FollowListModal = ({ open, setOpen, type, userId }) => {
     setFilteredList(filtered);
   }, [searchQuery, list]);
 
-  // Helper function to generate initials
   const getInitials = (fullName, email) => {
     if (fullName && typeof fullName === "string") {
       return fullName
@@ -56,9 +54,8 @@ const FollowListModal = ({ open, setOpen, type, userId }) => {
         .map((n) => n[0])
         .join("")
         .toUpperCase()
-        .slice(0, 2); // Limit to 2 characters
+        .slice(0, 2);
     }
-    // Fallback to email if fullName is missing
     if (email && typeof email === "string") {
       return email.split("@")[0].slice(0, 2).toUpperCase();
     }

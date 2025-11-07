@@ -37,10 +37,9 @@ app.use('/api/v1/admin', adminRoutes)
 
 const PORT = process.env.PORT || 8000
 
-// START SERVER ONLY AFTER DB CONNECTS
 const startServer = async () => {
   try {
-    await connectDb()  // ← Wait for DB
+    await connectDb()
     app.listen(PORT, '0.0.0.0', () => {
       console.log(`Server running on port ${PORT}`)
     })

@@ -1,4 +1,3 @@
-// src/components/auth/Login.jsx
 import axios from "axios";
 import React, { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -49,7 +48,8 @@ const handleSubmit = async (e) => {
     <div className="min-h-screen flex flex-col lg:flex-row bg-background">
       <div className=" lg:flex lg:w-1/2 items-center justify-center p-8">
         <img
-          src="src/assets/image-from-rawpixel-id-12363052-png.png"
+          // src="src/assets/image-from-rawpixel-id-12363052-png.png"
+          src="https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.shutterstock.com%2Fsearch%2Fcollege-selfies&psig=AOvVaw1_t9zU1K-Y-g3Q9nYie77d&ust=1762582537097000&source=images&cd=vfe&opi=89978449&ved=0CBUQjRxqFwoTCNj7-MCy35ADFQAAAAAdAAAAABAL"
           alt="Login illustration"
           className="max-w-xl w-full"
         />

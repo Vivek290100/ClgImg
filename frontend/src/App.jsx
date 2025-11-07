@@ -1,9 +1,7 @@
-// src/App.jsx
 import { Routes, Route, useLocation } from "react-router-dom";
 import { ThemeProvider } from "./context/ThemeContext.jsx";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
-import { Toaster } from "sonner";
 import store, { persistor } from "./redux/store.js";
 import Login from "./components/auth/Login.jsx";
 import SignUp from "./components/auth/SignUp.jsx";
@@ -32,11 +30,9 @@ const App = () => {
           <div className="min-h-screen bg-background text-foreground">
 
             <Routes>
-              {/* ---------- PUBLIC ---------- */}
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<SignUp />} />
 
-              {/* ---------- USER ROUTES ---------- */}
               <Route
                 path="/*"
                 element={
@@ -51,7 +47,6 @@ const App = () => {
                         <Route path="/saved" element={<div>Saved</div>} />
                         <Route path="/settings" element={<Settings/>} />
                         <Route path="/post/:postId" element={<PostDetailPage />} />
-                        {/* <Route path="/user/:id" element={<OtherUserProfile />} /> */}
                         
                       </Routes>
                     </UserLayout>
@@ -59,7 +54,6 @@ const App = () => {
                 }
               />
 
-              {/* ---------- ADMIN ROUTES ---------- */}
               <Route
                 path="/admin/*"
                 element={

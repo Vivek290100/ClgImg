@@ -1,4 +1,3 @@
-// src/components/pages/admin/UsersPage.jsx
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
@@ -75,7 +74,6 @@ const UsersPage = () => {
       ) : users.length === 0 ? (
         <p className="text-muted-foreground text-center">No users found</p>
       ) : isMobile ? (
-        // Mobile: Card-based layout
         <div className="space-y-3">
           {users.map((user) => (
             <Card key={user._id} className="w-full border border-border">
@@ -143,7 +141,6 @@ const UsersPage = () => {
           ))}
         </div>
       ) : (
-        // Desktop/Tablet: Table layout
         <div className="overflow-x-auto">
           <Table className="min-w-full">
             <TableHeader>

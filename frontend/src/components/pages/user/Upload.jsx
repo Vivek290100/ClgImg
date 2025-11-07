@@ -1,4 +1,3 @@
-// src/components/pages/user/Upload.jsx
 import React, { useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { Button } from "@/components/ui/button";
@@ -27,7 +26,7 @@ const Upload = () => {
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: {
-      "image/*": [".png", ".jpg", ".jpeg", ".webp"], // NO VIDEO
+      "image/*": [".png", ".jpg", ".jpeg", ".webp"],
     },
     maxFiles: 5,
     minFiles: 1,
@@ -124,7 +123,6 @@ const Upload = () => {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* LEFT: Dropzone + Preview */}
           <div className="lg:col-span-2">
             <Card className="p-6 border-border bg-card">
               <div

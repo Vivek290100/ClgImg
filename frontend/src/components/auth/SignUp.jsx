@@ -1,4 +1,3 @@
-// src/components/auth/SignUp.jsx
 import axios from "axios";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -13,7 +12,7 @@ export default function SignUpPage() {
     fullName: "",
     email: "",
     password: "",
-    role: "user",                // <-- default role
+    role: "user",
     profilePhoto: null,
   });
 
@@ -60,20 +59,18 @@ export default function SignUpPage() {
 
   return (
     <div className="flex flex-col lg:flex-row py-9 max-h-screen bg-card">
-      {/* left image */}
       <div className="lg:w-1/2 flex items-center justify-center p-8 bg-card">
         <img
-          src="src/assets/image-from-rawpixel-id-15502364-png.png"
+          // src="src/assets/image-from-rawpixel-id-15502364-png.png"
+          src="https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.freepik.com%2Fpremium-ai-image%2Fyoung-university-indian-girls-boy-happy-with-degree_81382754.htm&psig=AOvVaw35kVeUXK2yM-xpGdCYWgXS&ust=1762582837056000&source=images&cd=vfe&opi=89978449&ved=0CBUQjRxqFwoTCOjN6oqz35ADFQAAAAAdAAAAABAL"
           alt="3D rendering of cartoon-like man working on computer"
           className="w-full h-auto max-w-2xl rounded-full"
         />
       </div>
 
-      {/* right form */}
       <div className="lg:w-1/2 flex flex-col justify-center p-8 mt-8 bg-card">
         <div className="max-w-md w-full mx-auto">
           <form className="space-y-4 bg-card" onSubmit={handleSubmit}>
-            {/* Full Name */}
             <div>
               <label htmlFor="fullName" className="block text-sm font-medium text-gray-400">
                 Full Name
@@ -88,7 +85,6 @@ export default function SignUpPage() {
               />
             </div>
 
-            {/* Email */}
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-400">
                 Email address
@@ -103,7 +99,6 @@ export default function SignUpPage() {
               />
             </div>
 
-            {/* Password */}
             <div>
               <label htmlFor="password" className="block text-sm font-medium text-gray-400">
                 Password
@@ -119,7 +114,6 @@ export default function SignUpPage() {
             </div>
 
 
-            {/* Profile Photo */}
             <div>
               <label className="block text-sm font-medium text-gray-400">
                 Profile Photo
@@ -160,7 +154,6 @@ export default function SignUpPage() {
               </div>
             </div>
 
-            {/* Submit */}
             <div>
               {loading ? (
                 <button className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gradient-to-r from-yellow-400 to-violet-700 hover:bg-gradient-to-r">
