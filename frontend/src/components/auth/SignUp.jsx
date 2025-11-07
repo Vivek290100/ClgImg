@@ -56,74 +56,77 @@ export default function SignUpPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col lg:flex-row bg-gradient-to-tr from-yellow-50 via-purple-50 to-pink-50">
-      {/* Left: Fun Text Hero */}
-      <div className="lg:w-1/2 flex items-center justify-center p-8 lg:p-12">
-        <div className="max-w-lg text-center lg:text-left space-y-8">
-          <div>
-            <h1 className="text-5xl lg:text-7xl font-black text-gray-900">
-              Ready to
-            </h1>
-            <h2 className="text-6xl lg:text-8xl font-extrabold bg-gradient-to-r from-purple-600 to-pink-500 bg-clip-text text-transparent">
-              SNAP IT?
-            </h2>
-          </div>
-          <p className="text-xl lg:text-2xl text-gray-700 font-medium">
-            Join thousands of students already <br />
-            <span className="text-purple-600 font-bold">snapping their campus life!</span>
+    <div className="min-h-screen flex flex-col lg:flex-row bg-background text-foreground">
+      {/* Left: Hero Text */}
+      <div className="lg:w-1/2 flex items-center justify-center p-8 bg-gradient-to-tr from-pink-800 via-purple-800 to-indigo-900">
+        <div className="max-w-lg text-left space-y-6 animate-fadeIn">
+          <h1 className="text-5xl lg:text-6xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-yellow-300 via-pink-400 to-purple-500">
+            Join the
+            <br />
+            <span className="text-white">Campus Revolution</span>
+          </h1>
+          <p className="text-lg lg:text-xl text-gray-100 leading-relaxed">
+            One app. Endless memories.  
+            From freshers to farewell —  
+            <span className="font-bold text-yellow-300">Snap it all.</span>
           </p>
-          <div className="grid grid-cols-2 gap-4 mt-10">
-            {["🎉 Freshers", "📸 Moments", "👥 Clubs", "🌟 Stories"].map((item, i) => (
-              <div
-                key={i}
-                className="bg-white/90 backdrop-blur p-4 rounded-2xl shadow-lg text-center transform hover:scale-110 transition"
-                style={{ animationDelay: `${i * 100}ms` }}
-              >
-                <p className="text-3xl mb-1">{item.split(" ")[0]}</p>
-                <p className="text-sm font-semibold text-gray-700">{item.split(" ")[1]}</p>
-              </div>
-            ))}
+
+          <div className="grid grid-cols-3 gap-4 mt-8 text-center">
+            <div>
+              <div className="text-3xl font-bold text-pink-300">📸</div>
+              <div className="text-xs text-gray-200 mt-1">Snap</div>
+            </div>
+            <div>
+              <div className="text-3xl font-bold text-yellow-300">🎉</div>
+              <div className="text-xs text-gray-200 mt-1">Celebrate</div>
+            </div>
+            <div>
+              <div className="text-3xl font-bold text-purple-300">👥</div>
+              <div className="text-xs text-gray-200 mt-1">Connect</div>
+            </div>
           </div>
+
+          <p className="text-sm text-gray-300 italic mt-10 border-l-4 border-yellow-400 pl-4">
+            "Finally, an app that gets college life." – Aarav, CSE '26
+          </p>
         </div>
       </div>
 
       {/* Right: Signup Form */}
-      <div className="flex-1 flex items-center justify-center p-6 lg:p-12 bg-white/80 backdrop-blur-lg">
+      <div className="flex-1 flex items-center justify-center p-6 lg:p-12 bg-background">
         <div className="w-full max-w-md">
           <div className="text-center mb-8">
-            <h2 className="text-4xl font-bold text-gray-900">Create Account</h2>
-            <p className="text-gray-600 mt-2">One snap away from campus fame</p>
+            <h2 className="text-3xl font-bold">Create Your Snap ID</h2>
+            <p className="text-muted-foreground mt-2">Start your campus story today</p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-5">
             <input
               name="fullName"
               type="text"
-              placeholder="Your Cool Name"
+              placeholder="Your Full Name"
               required
-              className="w-full px-5 py-4 rounded-xl border border-gray-300 focus:ring-4 focus:ring-purple-300 focus:border-purple-500 transition text-gray-900"
+              className="w-full px-4 py-3 rounded-lg border border-input bg-background focus:ring-2 focus:ring-purple-500"
               onChange={handleChange}
             />
-
             <input
               name="email"
               type="email"
-              placeholder="you@college.ac.in"
+              placeholder="you@college.edu"
               required
-              className="w-full px-5 py-4 rounded-xl border border-gray-300 focus:ring-4 focus:ring-purple-300 focus:border-purple-500 transition text-gray-900"
+              className="w-full px-4 py-3 rounded-lg border border-input bg-background focus:ring-2 focus:ring-purple-500"
               onChange={handleChange}
             />
-
             <input
               name="password"
               type="password"
-              placeholder="Secret Password"
+              placeholder="Choose a strong password"
               required
-              className="w-full px-5 py-4 rounded-xl border border-gray-300 focus:ring-4 focus:ring-purple-300 focus:border-purple-500 transition text-gray-900"
+              className="w-full px-4 py-3 rounded-lg border border-input bg-background focus:ring-2 focus:ring-purple-500"
               onChange={handleChange}
             />
 
-            <div className="border-2 border-dashed border-purple-300 rounded-xl p-6 text-center cursor-pointer hover:border-purple-500 transition">
+            <div className="border-2 border-dashed border-purple-500 rounded-xl p-6 text-center">
               <input
                 id="profilePhoto"
                 type="file"
@@ -131,31 +134,34 @@ export default function SignUpPage() {
                 className="hidden"
                 onChange={handleFileChange}
               />
-              <label htmlFor="profilePhoto" className="cursor-pointer">
-                <p className="text-4xl mb-2">📸</p>
-                <p className="text-purple-600 font-semibold">
-                  {formData.profilePhoto ? "Photo Selected!" : "Tap to Add Selfie"}
-                </p>
+              <label
+                htmlFor="profilePhoto"
+                className="cursor-pointer text-purple-400 hover:text-purple-300 font-medium"
+              >
+                {formData.profilePhoto ? "✅ Photo Selected" : "📷 Upload Profile Pic"}
               </label>
+              <p className="text-xs text-gray-500 mt-2">Make a great first snap!</p>
             </div>
 
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-5 font-bold text-xl text-white bg-gradient-to-r from-yellow-400 via-purple-500 to-pink-500 rounded-xl hover:shadow-2xl transform hover:scale-105 transition disabled:opacity-70"
+              className="w-full py-4 font-bold text-white bg-gradient-to-r from-yellow-400 via-purple-500 to-pink-500 rounded-xl hover:shadow-2xl transition-all disabled:opacity-70 flex items-center justify-center gap-3"
             >
               {loading ? (
-                <Loader className="mx-auto h-7 w-7 animate-spin" />
+                <Loader className="h-5 w-5 animate-spin" />
               ) : (
-                "Join CampusSnap! 🎉"
+                <>
+                  <span>🚀 Join CampusSnap</span>
+                </>
               )}
             </button>
           </form>
 
-          <p className="text-center mt-6 text-gray-600">
+          <p className="text-center text-sm text-muted-foreground mt-6">
             Already snapping?{" "}
-            <Link to="/login" className="text-purple-600 font-bold hover:underline">
-              Log In
+            <Link to="/login" className="text-purple-400 font-bold hover:underline">
+              Login Here
             </Link>
           </p>
         </div>

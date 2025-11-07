@@ -22,6 +22,7 @@ export default function LoginPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     dispatch(setLoading(true));
+
     try {
       const res = await axios.post(`${USER_API_ENDPOINT}/login`, formData, {
         headers: { "Content-Type": "application/json" },
@@ -42,79 +43,85 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col lg:flex-row bg-gradient-to-br from-purple-50 via-pink-50 to-yellow-50">
-      {/* Left: Animated Text Hero */}
-      <div className="lg:w-1/2 flex items-center justify-center p-8 lg:p-12">
-        <div className="max-w-lg text-center lg:text-left space-y-6">
-          <h1 className="text-5xl lg:text-6xl font-bold bg-gradient-to-r from-purple-600 via-pink-500 to-yellow-400 bg-clip-text text-transparent animate-pulse">
-            Welcome to
+    <div className="min-h-screen flex flex-col lg:flex-row bg-background text-foreground">
+      {/* Left: Text Hero */}
+      <div className="lg:w-1/2 flex items-center justify-center p-8 bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900">
+        <div className="max-w-lg text-left space-y-6 animate-fadeIn">
+          <h1 className="text-5xl lg:text-6xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-yellow-400 via-pink-500 to-purple-600">
+            Welcome Back
+            <br />
+            <span className="text-white">!</span>
           </h1>
-          <h2 className="text-6xl lg:text-7xl font-extrabold text-gray-900">
-            Campus<span className="text-purple-600">Snap</span>
-          </h2>
-          <p className="text-lg lg:text-xl text-gray-700 leading-relaxed">
-            Snap moments. Share vibes. <br />
-            <span className="font-semibold text-purple-600">Live the campus life.</span>
+          <p className="text-lg lg:text-xl text-gray-200 leading-relaxed">
+            Relive your campus moments.  
+            Connect with friends.  
+            Never miss an event again.
           </p>
-          <div className="flex gap-3 justify-center lg:justify-start mt-8">
-            <span className="px-4 py-2 bg-purple-100 text-purple-700 rounded-full text-sm font-medium animate-bounce">
-              Events
-            </span>
-            <span className="px-4 py-2 bg-pink-100 text-pink-700 rounded-full text-sm font-medium animate-bounce delay-200">
-              Friends
-            </span>
-            <span className="px-4 py-2 bg-yellow-100 text-yellow-700 rounded-full text-sm font-medium animate-bounce delay-500">
-              Memories
-            </span>
+          <div className="flex gap-4 mt-8">
+            <div className="text-center">
+              <div className="text-4xl font-bold text-yellow-400">10K+</div>
+              <div className="text-sm text-gray-300">Active Students</div>
+            </div>
+            <div className="text-center">
+              <div className="text-4xl font-bold text-pink-400">500+</div>
+              <div className="text-sm text-gray-300">Events This Month</div>
+            </div>
           </div>
+          <p className="text-xs text-gray-400 italic mt-8">
+            "CampusSnap turned my college into a movie." – Riya, Class of '25
+          </p>
         </div>
       </div>
 
       {/* Right: Login Form */}
-      <div className="flex-1 flex items-center justify-center p-6 lg:p-12 bg-white/80 backdrop-blur-lg">
+      <div className="flex-1 flex items-center justify-center p-6 lg:p-12 bg-background">
         <div className="w-full max-w-md space-y-8">
           <div className="text-center">
-            <h2 className="text-3xl font-bold text-gray-900">Hey, Snapper! 👋</h2>
-            <p className="text-muted-foreground mt-2">Log in and join the fun</p>
+            <h2 className="text-3xl font-bold">Login to CampusSnap</h2>
+            <p className="text-muted-foreground mt-2">Your campus, your story, your squad.</p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
-              <label className="block text-sm font-medium text-gray-700">Email</label>
+              <label className="block text-sm font-medium">Email</label>
               <input
                 name="email"
                 type="email"
                 required
-                className="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-xl bg-white text-gray-900 focus:ring-4 focus:ring-purple-300 focus:border-purple-500 transition"
-                placeholder="you@college.edu"
+                className="mt-1 block w-full px-4 py-2.5 border border-input rounded-lg bg-background text-foreground focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                 onChange={handleChange}
+                placeholder="you@college.edu"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700">Password</label>
+              <label className="block text-sm font-medium">Password</label>
               <input
                 name="password"
                 type="password"
                 required
-                className="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-xl bg-white text-gray-900 focus:ring-4 focus:ring-purple-300 focus:border-purple-500 transition"
-                placeholder="••••••••"
+                className="mt-1 block w-full px-4 py-2.5 border border-input rounded-lg bg-background text-foreground focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                 onChange={handleChange}
+                placeholder="••••••••"
               />
             </div>
 
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-4 mt-6 font-bold text-white bg-gradient-to-r from-purple-500 via-pink-500 to-yellow-400 rounded-xl hover:shadow-2xl transform hover:scale-105 transition disabled:opacity-70"
+              className="w-full py-3 mt-6 font-bold text-white bg-gradient-to-r from-yellow-400 via-purple-500 to-pink-500 rounded-lg hover:shadow-xl transition-all disabled:opacity-70 flex items-center justify-center gap-2"
             >
-              {loading ? <Loader2 className="mx-auto h-6 w-6 animate-spin" /> : "Let's Go! 🚀"}
+              {loading ? (
+                <Loader2 className="h-5 w-5 animate-spin" />
+              ) : (
+                "Snap Back In"
+              )}
             </button>
           </form>
 
-          <p className="text-center text-sm text-gray-600">
+          <p className="text-center text-sm text-muted-foreground">
             New on campus?{" "}
-            <Link to="/signup" className="text-purple-600 hover:underline font-bold">
+            <Link to="/signup" className="text-purple-400 hover:underline font-bold">
               Join the Snap Squad
             </Link>
           </p>
