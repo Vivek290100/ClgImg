@@ -61,8 +61,7 @@ export default function SignUpPage() {
     <div className="flex flex-col lg:flex-row py-9 max-h-screen bg-card">
       <div className="lg:w-1/2 flex items-center justify-center p-8 bg-card">
         <img
-          // src="src/assets/image-from-rawpixel-id-15502364-png.png"
-          src="https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.freepik.com%2Fpremium-ai-image%2Fyoung-university-indian-girls-boy-happy-with-degree_81382754.htm&psig=AOvVaw35kVeUXK2yM-xpGdCYWgXS&ust=1762582837056000&source=images&cd=vfe&opi=89978449&ved=0CBUQjRxqFwoTCOjN6oqz35ADFQAAAAAdAAAAABAL"
+          src="/signup.png"
           alt="3D rendering of cartoon-like man working on computer"
           className="w-full h-auto max-w-2xl rounded-full"
         />
