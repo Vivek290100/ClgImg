@@ -262,14 +262,18 @@ export const getUserProfile = async (req, res) => {
       .sort({ createdAt: -1 })
       .lean();
 
-    const formattedPosts = posts.map(post => ({
-      _id: post._id,
-      primaryImage: post.media?.[0]?.url || null,
-      imageCount: post.media?.length || 0,
-      likes: post.likes?.length || 0,
-      comments: post.comments?.length || 0,
-      isLiked: currentUserId ? post.likes?.includes(currentUserId) : false,
-    }));
+    const formattedPosts = posts.map(post => {
+      const first = post.media?.[0]; 
+      return {
+        _id: post._id,
+        primaryMedia: first ? { type: first.type, url: first.url } : null,
+        imageCount: post.media?.length || 0,
+        likes: post.likes?.length || 0,
+        comments: post.comments?.length || 0,
+        isLiked: currentUserId ? post.likes?.includes(currentUserId) : false,
+        caption: post.caption,
+      };
+    });
 
     return res.status(200).json({
       success: true,
