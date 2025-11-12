@@ -45,15 +45,24 @@ const ProfilePage = () => {
       });
 
       const user = res.data.user;
-      const formattedPosts = (res.data.posts || []).map((post) => ({
-        _id: post._id,
-        primaryMedia: post.primaryMedia,
-        imageCount: post.imageCount,
-        likes: post.likes,
-        comments: post.comments,
-        isLiked: post.isLiked,
-        caption: post.caption,
-      }));
+      const formattedPosts = (res.data.posts || []).map((post) => {
+        let primaryMedia = null;
+        if (post.primaryMedia) {
+          primaryMedia = post.primaryMedia;
+        } else if (post.primaryImage) {
+          primaryMedia = { type: "image", url: post.primaryImage };
+        }
+        return {
+          _id: post._id,
+          primaryMedia,
+          imageCount: post.imageCount,
+          likes: post.likes,
+          comments: post.comments,
+          isLiked: post.isLiked,
+          caption: post.caption,
+        };
+      });
+
 
       setProfile(user);
       setPosts(formattedPosts);
@@ -138,9 +147,9 @@ const ProfilePage = () => {
 
   const joinedDate = profile
     ? new Date(profile.createdAt).toLocaleDateString("en-US", {
-        month: "long",
-        year: "numeric",
-      })
+      month: "long",
+      year: "numeric",
+    })
     : "";
 
   if (loading && !profile) {
@@ -325,11 +334,10 @@ const ProfilePage = () => {
                         className="flex items-center gap-2 hover:scale-110 transition"
                       >
                         <Heart
-                          className={`w-6 h-6 drop-shadow-lg transition-all ${
-                            post.isLiked
+                          className={`w-6 h-6 drop-shadow-lg transition-all ${post.isLiked
                               ? "fill-red-500 text-red-500 scale-110"
                               : "text-white"
-                          }`}
+                            }`}
                         />
                         <span className="font-medium text-sm">{post.likes}</span>
                       </button>
