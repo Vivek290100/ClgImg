@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import {
   Calendar,
@@ -34,53 +34,46 @@ const ProfilePage = () => {
   const [open, setOpen] = useState(false);
   const [followModal, setFollowModal] = useState({ open: false, type: "" });
 
-  // Fetch profile and posts
-  useEffect(() => {
-    const fetchProfile = async () => {
-      if (!id || !currentUser?._id) return;
+  const fetchProfile = useCallback(async () => {
+    if (!id || !currentUser?._id) return;
 
-      try {
-        setLoading(true);
-        const res = await axios.get(`${USER_API_ENDPOINT}/user/${id}`, {
-          withCredentials: true,
-        });
+    try {
+      setLoading(true);
 
-        const user = res.data.user;
-        const formattedPosts = (res.data.posts || []).map((post) => {
-          const media = post.media ?? [];
-          const primaryMedia = media[0] || null;
-          const isLiked = Array.isArray(post.likes) && post.likes.includes(currentUser._id);
+      const res = await axios.get(`${USER_API_ENDPOINT}/user/${id}`, {
+        withCredentials: true,
+      });
 
-          return {
-            _id: post._id,
-            primaryMedia,
-            imageCount: media.filter((m) => m.type === "image").length,
-            likes: post.likes?.length || 0,
-            comments: post.comments?.length || 0,
-            isLiked,
-            caption: post.caption || "",
-          };
-        });
+      const user = res.data.user;
+      const formattedPosts = (res.data.posts || []).map((post) => ({
+        _id: post._id,
+        primaryMedia: post.primaryMedia,
+        imageCount: post.imageCount,
+        likes: post.likes,
+        comments: post.comments,
+        isLiked: post.isLiked,
+        caption: post.caption,
+      }));
 
-        setProfile(user);
-        setPosts(formattedPosts);
-        setIsOwnProfile(user._id === currentUser._id);
-        setFollowing(res.data.isFollowing || false);
-        setFollowersCount(res.data.followers || 0);
-        setFollowingCount(res.data.following || 0);
-      } catch (err) {
-        console.error("Fetch error:", err);
-        toast.error("Profile not found");
-        navigate("/explore");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchProfile();
+      setProfile(user);
+      setPosts(formattedPosts);
+      setIsOwnProfile(user._id === currentUser._id);
+      setFollowing(res.data.isFollowing || false);
+      setFollowersCount(res.data.followers || 0);
+      setFollowingCount(res.data.following || 0);
+    } catch (err) {
+      console.error("Fetch error:", err);
+      toast.error("Profile not found");
+      navigate("/explore");
+    } finally {
+      setLoading(false);
+    }
   }, [id, currentUser?._id, navigate]);
 
-  // Follow / Unfollow
+  useEffect(() => {
+    fetchProfile();
+  }, [fetchProfile]);
+
   const handleFollowToggle = async () => {
     const endpoint = following
       ? `${USER_API_ENDPOINT}/unfollow/${id}`
@@ -91,20 +84,23 @@ const ProfilePage = () => {
       setFollowing(!following);
       setFollowersCount((prev) => (following ? prev - 1 : prev + 1));
       toast.success(following ? "Unfollowed" : "Following");
-    } catch {
+    } catch (err) {
       toast.error("Failed");
     }
   };
 
-  // Like / Unlike post
   const handleLike = async (postId, e) => {
     e.stopPropagation();
 
+    const post = posts.find((p) => p._id === postId);
+    if (!post) return;
+
+    const wasLiked = post.isLiked;
+    const newLikesCount = wasLiked ? post.likes - 1 : post.likes + 1;
+
     setPosts((prev) =>
       prev.map((p) =>
-        p._id === postId
-          ? { ...p, isLiked: !p.isLiked, likes: p.isLiked ? p.likes - 1 : p.likes + 1 }
-          : p
+        p._id === postId ? { ...p, likes: newLikesCount, isLiked: !wasLiked } : p
       )
     );
 
@@ -122,19 +118,32 @@ const ProfilePage = () => {
             : p
         )
       );
-    } catch {
+    } catch (err) {
       toast.error("Failed");
       setPosts((prev) =>
         prev.map((p) =>
           p._id === postId
-            ? { ...p, isLiked: !p.isLiked, likes: p.isLiked ? p.likes + 1 : p.likes - 1 }
+            ? { ...p, likes: post.likes, isLiked: wasLiked }
             : p
         )
       );
     }
   };
 
-  if (loading) {
+  const initials = (profile?.fullName ?? "")
+    .split(" ")
+    .map((n) => n[0])
+    .join("")
+    .toUpperCase();
+
+  const joinedDate = profile
+    ? new Date(profile.createdAt).toLocaleDateString("en-US", {
+        month: "long",
+        year: "numeric",
+      })
+    : "";
+
+  if (loading && !profile) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <div className="w-10 h-10 border-4 border-purple-500 border-t-transparent rounded-full animate-spin" />
@@ -144,20 +153,9 @@ const ProfilePage = () => {
 
   if (!profile) return null;
 
-  const initials = (profile.fullName ?? "")
-    .split(" ")
-    .map((n) => n[0])
-    .join("")
-    .toUpperCase();
-
-  const joinedDate = new Date(profile.createdAt).toLocaleDateString("en-US", {
-    month: "long",
-    year: "numeric",
-  });
-
   return (
     <div className="min-h-screen bg-background pb-20 md:pb-0">
-      {/* Profile Header */}
+      {/* HEADER */}
       <header className="bg-card border-b">
         <div className="container mx-auto px-4 py-8">
           <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
@@ -260,10 +258,19 @@ const ProfilePage = () => {
         </div>
       </header>
 
-      {/* Posts Grid */}
+      {/* POSTS GRID */}
       <section className="container mx-auto px-4 py-8">
         <h2 className="text-xl font-semibold mb-6">Posts</h2>
-        {posts.length === 0 ? (
+        {loading && posts.length === 0 ? (
+          <div className="grid grid-cols-3 md:grid-cols-4 gap-1 md:gap-4">
+            {Array.from({ length: 12 }).map((_, i) => (
+              <div
+                key={`sk-${i}`}
+                className="relative aspect-square bg-muted rounded-lg animate-pulse"
+              />
+            ))}
+          </div>
+        ) : posts.length === 0 ? (
           <div className="text-center py-20">
             <ImageIcon className="w-20 h-20 mx-auto mb-4 opacity-30" />
             <p className="text-muted-foreground">No posts yet</p>
@@ -272,26 +279,27 @@ const ProfilePage = () => {
           <div className="grid grid-cols-3 md:grid-cols-4 gap-1 md:gap-4">
             {posts.map((post) => {
               const isMulti = post.imageCount > 1;
+              const firstMedia = post.primaryMedia;
+
               return (
                 <div
-                  key={`${post._id}-${post.isLiked}-${post.likes}`}
+                  key={post._id}
                   className="relative group overflow-hidden rounded-lg bg-card border aspect-square cursor-pointer"
                   onClick={() => navigate(`/post/${post._id}`)}
                 >
-                  {/* Media */}
-                  {post.primaryMedia ? (
-                    post.primaryMedia.type === "video" ? (
+                  {/* Show first media preview */}
+                  {firstMedia ? (
+                    firstMedia.type === "video" ? (
                       <video
-                        src={post.primaryMedia.url}
+                        src={firstMedia.url}
                         className="w-full h-full object-cover"
-                        controls
                         muted
                         loop
                         playsInline
                       />
                     ) : (
                       <img
-                        src={post.primaryMedia.url}
+                        src={firstMedia.url}
                         alt={post.caption || "Post"}
                         className="w-full h-full object-cover"
                         loading="lazy"
@@ -304,12 +312,12 @@ const ProfilePage = () => {
                   )}
 
                   {isMulti && (
-                    <div className="absolute top-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded">
-                      <ImageIcon className="w-3 h-3 inline" /> {post.imageCount}
+                    <div className="absolute top-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded flex items-center gap-1">
+                      <ImageIcon className="w-3 h-3" /> {post.imageCount}
                     </div>
                   )}
 
-                  {/* Overlay for likes/comments */}
+                  {/* Hover overlay for likes/comments */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-end p-4">
                     <div className="flex gap-6 text-white">
                       <button
@@ -339,7 +347,7 @@ const ProfilePage = () => {
         )}
       </section>
 
-      {/* Modals */}
+      {/* MODALS */}
       {isOwnProfile && <UpdateProfileModal open={open} setOpen={setOpen} />}
       <FollowListModal
         open={followModal.open}
