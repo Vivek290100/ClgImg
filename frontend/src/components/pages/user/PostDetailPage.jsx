@@ -246,56 +246,66 @@ const PostDetailPage = () => {
           <p className="text-xs text-muted-foreground">{timeAgo}</p>
         </div>
 
-        <div className="relative bg-black">
-          {images.length > 0 ? (
-            <div
-              className="overflow-hidden"
-              onTouchStart={handleTouchStart}
-              onTouchMove={handleTouchMove}
-              onTouchEnd={handleTouchEnd}
-            >
-              <div
-                className="flex transition-transform duration-300 ease-out"
-                style={{ transform: `translateX(-${currentImageIndex * 100}%)` }}
-              >
-                {images.map((img, i) => (
-                  <div key={i} className="w-full flex-shrink-0">
-                    <img
-                      src={img.url}
-                      alt="Post"
-                      className="w-full max-h-screen object-contain bg-black"
-                      style={{ maxHeight: "75vh" }}
-                    />
-                  </div>
-                ))}
-              </div>
+<div className="relative bg-black">
+  {post.media && post.media.length > 0 ? (
+    <div
+      className="overflow-hidden"
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+    >
+      <div
+        className="flex transition-transform duration-300 ease-out"
+        style={{ transform: `translateX(-${currentImageIndex * 100}%)` }}
+      >
+        {post.media.map((m, i) => (
+          <div key={i} className="w-full flex-shrink-0 flex justify-center items-center bg-black">
+            {m.type === "video" ? (
+              <video
+                src={m.url}
+                className="w-full max-h-screen object-contain"
+                controls
+                style={{ maxHeight: "75vh" }}
+              />
+            ) : (
+              <img
+                src={m.url}
+                alt="Post"
+                className="w-full max-h-screen object-contain"
+                style={{ maxHeight: "75vh" }}
+              />
+            )}
+          </div>
+        ))}
+      </div>
 
-              {images.length > 1 && (
-                <div className="absolute top-4 right-4 bg-black/70 text-white px-3 py-1.5 rounded-full text-sm font-medium">
-                  {currentImageIndex + 1}/{images.length}
-                </div>
-              )}
-
-              {images.length > 1 && (
-                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
-                  {images.map((_, i) => (
-                    <button
-                      key={i}
-                      onClick={() => setCurrentImageIndex(i)}
-                      className={`w-1.5 h-1.5 rounded-full transition ${
-                        i === currentImageIndex ? "bg-white w-8" : "bg-white/60"
-                      }`}
-                    />
-                  ))}
-                </div>
-              )}
-            </div>
-          ) : (
-            <div className="h-96 flex items-center justify-center">
-              <ImageIcon className="w-20 h-20 text-gray-500" />
-            </div>
-          )}
+      {post.media.length > 1 && (
+        <div className="absolute top-4 right-4 bg-black/70 text-white px-3 py-1.5 rounded-full text-sm font-medium">
+          {currentImageIndex + 1}/{post.media.length}
         </div>
+      )}
+
+      {post.media.length > 1 && (
+        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
+          {post.media.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => setCurrentImageIndex(i)}
+              className={`w-1.5 h-1.5 rounded-full transition ${
+                i === currentImageIndex ? "bg-white w-8" : "bg-white/60"
+              }`}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  ) : (
+    <div className="h-96 flex items-center justify-center">
+      <ImageIcon className="w-20 h-20 text-gray-500" />
+    </div>
+  )}
+</div>
+
 
         <div className="p-4 border-b bg-background">
           <div className="flex items-center justify-between">

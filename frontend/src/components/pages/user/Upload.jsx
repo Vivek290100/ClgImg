@@ -27,21 +27,32 @@ const Upload = () => {
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: {
       "image/*": [".png", ".jpg", ".jpeg", ".webp"],
+      "video/*": [".mp4", ".mov", ".webm"],
     },
     maxFiles: 5,
     minFiles: 1,
-    maxSize: 2 * 1024 * 1024, // 2MB
+    validator: (file) => {
+      if (file.type.startsWith("image") && file.size > 4 * 1024 * 1024) {
+        return { code: "file-too-large", message: "Max 4MB for images" };
+      }
+      if (file.type.startsWith("video") && file.size > 10 * 1024 * 1024) {
+        return { code: "file-too-large", message: "Max 10MB for videos" };
+      }
+      return null;
+    },
     onDrop: (acceptedFiles, rejectedFiles) => {
       // REJECTED FILES
       if (rejectedFiles.length > 0) {
         rejectedFiles.forEach(({ file, errors }) => {
-          if (errors[0]?.code === "file-too-large") {
-            toast.error(`${file.name} is larger than 2MB`);
-          } else if (errors[0]?.code === "too-many-files") {
-            toast.error("Maximum 5 images allowed");
-          } else if (errors[0]?.code === "file-invalid-type") {
-            toast.error("Only images allowed (no videos)");
-          }
+          errors.forEach((err) => {
+            if (err.code === "file-too-large") {
+              toast.error(`${file.name} is too large: ${err.message}`);
+            } else if (err.code === "too-many-files") {
+              toast.error("Maximum 5 files allowed");
+            } else if (err.code === "file-invalid-type") {
+              toast.error("Only images or videos allowed");
+            }
+          });
         });
         return;
       }
@@ -55,7 +66,7 @@ const Upload = () => {
       setPreviews(
         newFiles.map((file) => ({
           url: URL.createObjectURL(file),
-          type: "image",
+          type: file.type.startsWith("video") ? "video" : "image",
           id: file.id,
         }))
       );
@@ -71,7 +82,7 @@ const Upload = () => {
 
   const handleUpload = async () => {
     if (files.length === 0) {
-      toast.error("Please select 1–5 images");
+      toast.error("Please select 1–5 files");
       return;
     }
     if (!department || !year) {
@@ -87,14 +98,10 @@ const Upload = () => {
     formData.append("year", year);
 
     try {
-      const res = await axios.post(
-        `${USER_API_ENDPOINT}/post/create`,
-        formData,
-        {
-          headers: { "Content-Type": "multipart/form-data" },
-          withCredentials: true,
-        }
-      );
+      const res = await axios.post(`${USER_API_ENDPOINT}/post/create`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+        withCredentials: true,
+      });
 
       if (res.data.success) {
         toast.success("Posted!");
@@ -134,14 +141,14 @@ const Upload = () => {
                 <input {...getInputProps()} />
                 <UploadCloud className="w-16 h-16 mx-auto mb-4 text-purple-400" />
                 <p className="text-lg font-medium text-foreground mb-2">
-                  {isDragActive ? "Drop images here..." : "Drag & drop up to 5 images"}
+                  {isDragActive ? "Drop files here..." : "Drag & drop up to 5 files"}
                 </p>
                 <p className="text-sm text-muted-foreground mb-4">
-                  Max 5 images · 2MB each · JPG, PNG, WebP
+                  Max 5 files · 4MB each for images · 10MB each for videos · JPG, PNG, WebP, MP4
                 </p>
                 <Button size="lg" className="bg-gradient-to-r from-yellow-400 via-purple-500 to-pink-500 text-white hover:shadow-xl">
                   <ImageIcon className="mr-2 h-5 w-5" />
-                  Choose Images
+                  Choose Files
                 </Button>
               </div>
 
@@ -154,7 +161,11 @@ const Upload = () => {
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                     {previews.map((p) => (
                       <div key={p.id} className="relative group rounded-lg overflow-hidden border">
-                        <img src={p.url} alt="preview" className="w-full h-40 object-cover" />
+                        {p.type === "image" ? (
+                          <img src={p.url} alt="preview" className="w-full h-40 object-cover" />
+                        ) : (
+                          <video src={p.url} className="w-full h-40 object-cover" controls />
+                        )}
                         <button
                           onClick={() => removeFile(p.id)}
                           className="absolute top-2 right-2 p-1.5 bg-black/70 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity"

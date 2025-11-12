@@ -198,7 +198,7 @@ export const createPost = async (req, res) => {
 
     if (!req.files || req.files.length === 0) {
       return res.status(400).json({
-        message: "At least one photo or video is required",
+        message: "At least one photo is required",
         success: false,
       });
     }

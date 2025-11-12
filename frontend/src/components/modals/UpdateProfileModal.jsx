@@ -99,7 +99,7 @@ const UpdateProfileModal = ({ open, setOpen }) => {
             type="email"
             placeholder="Email"
             value={form.email}
-            onChange={handleChange}
+            readOnly
           />
           <Textarea
             name="bio"

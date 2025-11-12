@@ -42,10 +42,12 @@ const Home = () => {
             ? formatDistanceToNow(new Date(post.createdAt), { addSuffix: true })
             : "Unknown",
           image: post.media?.[0]?.url || "https://via.placeholder.com/300",
+          mediaType: post.media?.[0]?.type || "image",
           caption: post.caption || "",
           likes: post.likes?.length || 0,
           comments: post.comments?.length || 0,
         }));
+
         setTrendingPosts(formattedPosts);
       } catch (error) {
         toast.error("Failed to load trending posts or user count");
@@ -126,13 +128,12 @@ const Home = () => {
                           src={post.profilePhoto}
                           alt={post.user}
                           className="w-10 h-10 rounded-full object-cover"
-                          onError={(e) => e.target.classList.add("hidden")} 
+                          onError={(e) => e.target.classList.add("hidden")}
                         />
                       ) : null}
                       <div
-                        className={`w-10 h-10 rounded-full bg-gradient-to-br from-yellow-400 via-purple-500 to-pink-500 flex items-center justify-center text-white font-bold text-sm shadow-lg ${
-                          post.profilePhoto ? "hidden" : ""
-                        }`}
+                        className={`w-10 h-10 rounded-full bg-gradient-to-br from-yellow-400 via-purple-500 to-pink-500 flex items-center justify-center text-white font-bold text-sm shadow-lg ${post.profilePhoto ? "hidden" : ""
+                          }`}
                       >
                         {post.firstLetter}
                       </div>
@@ -142,15 +143,25 @@ const Home = () => {
                       </div>
                     </div>
                   </div>
+
                   <div className="relative aspect-square overflow-hidden">
-                    <img
-                      src={post.image}
-                      alt={post.caption}
-                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
-                      onError={(e) => (e.target.src = "https://via.placeholder.com/300")}
-                    />
+                    {post.mediaType === "video" ? (
+                      <video
+                        src={post.image} // your post.media[0].url
+                        className="w-full h-full object-cover"
+                        controls
+                      />
+                    ) : (
+                      <img
+                        src={post.image}
+                        alt={post.caption}
+                        className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+                        onError={(e) => (e.target.src = "https://via.placeholder.com/300")}
+                      />
+                    )}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                   </div>
+
                   <div className="p-4 space-y-3">
                     <div className="flex items-center gap-4">
                       <span className="text-sm text-muted-foreground">{post.likes} Likes</span>
@@ -161,6 +172,7 @@ const Home = () => {
                 </div>
               ))}
             </div>
+
           )}
           <div className="text-center mt-10">
             <Link to="/explore">

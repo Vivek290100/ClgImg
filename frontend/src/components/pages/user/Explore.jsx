@@ -21,7 +21,6 @@ import {
   Command,
   CommandEmpty,
   CommandGroup,
-  CommandInput,
   CommandItem,
   CommandList,
   CommandSeparator,
@@ -66,16 +65,19 @@ const Explore = () => {
       });
 
       const formatted = (res.data.posts || []).map((p) => {
-        const images = (p.media ?? []).filter((m) => m.type === "image");
-        const primaryImage = images.length > 0 ? images[0].url : null;
+        const media = p.media ?? [];
+        const primaryMedia = media[0] || null;
+        const images = media.filter((m) => m.type === "image");
+        const imageCount = images.length;
 
         const isLiked = Array.isArray(p.likes) && p.likes.includes(user._id);
 
         return {
           ...p,
+          media,
+          primaryMedia,
           images,
-          imageCount: images.length,
-          primaryImage,
+          imageCount,
           likes: p.likes?.length || 0,
           comments: p.comments?.length || 0,
           isLiked,
@@ -246,13 +248,24 @@ const Explore = () => {
           className="relative group overflow-hidden rounded-lg bg-card border border-border aspect-square transition-all duration-300 hover:shadow-xl hover:scale-[1.02] hover:z-10"
         >
           <div className="absolute inset-0">
-            {post.primaryImage ? (
-              <img
-                src={post.primaryImage}
-                alt={post.caption || "Post"}
-                className="w-full h-full object-cover"
-                loading="lazy"
-              />
+            {post.primaryMedia ? (
+              post.primaryMedia.type === "video" ? (
+                <video
+                  src={post.primaryMedia.url}
+                  className="w-full h-full object-cover"
+                  controls
+                  muted
+                  loop
+                  playsInline
+                />
+              ) : (
+                <img
+                  src={post.primaryMedia.url}
+                  alt={post.caption || "Post"}
+                  className="w-full h-full object-cover"
+                  loading="lazy"
+                />
+              )
             ) : (
               <div className="w-full h-full bg-muted flex items-center justify-center">
                 <ImageIcon className="w-12 h-12 text-muted-foreground/50" />
@@ -417,10 +430,7 @@ const Explore = () => {
           </div>
         )}
 
-        <div className="col-span-full text-center text-xs text-muted-foreground py-2">
-          {/* Page: {pageRef.current} | Posts: {posts.length} | hasMore: {hasMore.toString()} | Loading: {loading.toString()} */}
-          {/* Page: {pageRef.current} | Posts: {posts.length} */}
-        </div>
+        <div className="col-span-full text-center text-xs text-muted-foreground py-2" />
       </section>
 
       <Button
