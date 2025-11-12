@@ -151,11 +151,11 @@ const ProfilePage = () => {
         <div className="container mx-auto px-4 py-8">
           <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
             <Avatar className="w-28 h-28 md:w-36 md:h-36 ring-4 ring-background shadow-xl">
-  <AvatarImage src={profile.profilePhoto} className="object-cover" />
-  <AvatarFallback className="text-3xl font-bold bg-gradient-to-br from-yellow-400 to-purple-600 text-white">
-    {initials}
-  </AvatarFallback>
-</Avatar>
+              <AvatarImage src={profile.profilePhoto} className="object-cover" />
+              <AvatarFallback className="text-3xl font-bold bg-gradient-to-br from-yellow-400 to-purple-600 text-white">
+                {initials}
+              </AvatarFallback>
+            </Avatar>
 
             <div className="flex-1 text-center md:text-left space-y-4">
               <div className="flex flex-col md:flex-row items-center md:items-start justify-between gap-4">
@@ -266,13 +266,24 @@ const ProfilePage = () => {
                   className="relative group overflow-hidden rounded-lg bg-card border aspect-square cursor-pointer"
                   onClick={() => navigate(`/post/${post._id}`)}
                 >
-                  {post.primaryImage ? (
-                    <img
-                      src={post.primaryImage}
-                      alt="Post"
-                      className="w-full h-full object-cover"
-                      loading="lazy"
-                    />
+                  {post.primaryMedia ? (
+                    post.primaryMedia.type === "video" ? (
+                      <video
+                        src={post.primaryMedia.url}
+                        className="w-full h-full object-cover"
+                        controls
+                        muted
+                        loop
+                        playsInline
+                      />
+                    ) : (
+                      <img
+                        src={post.primaryMedia.url}
+                        alt={post.caption || "Post"}
+                        className="w-full h-full object-cover"
+                        loading="lazy"
+                      />
+                    )
                   ) : (
                     <div className="w-full h-full bg-muted flex items-center justify-center">
                       <ImageIcon className="w-12 h-12 text-muted-foreground/50" />
@@ -292,11 +303,8 @@ const ProfilePage = () => {
                         className="flex items-center gap-2 hover:scale-110 transition"
                       >
                         <Heart
-                          className={`w-6 h-6 drop-shadow-lg transition-all ${
-                            post.isLiked
-                              ? "fill-red-500 text-red-500 scale-110"
-                              : "text-white"
-                          }`}
+                          className={`w-6 h-6 drop-shadow-lg transition-all ${post.isLiked ? "fill-red-500 text-red-500 scale-110" : "text-white"
+                            }`}
                         />
                         <span className="font-medium text-sm">{post.likes}</span>
                       </button>
@@ -310,6 +318,7 @@ const ProfilePage = () => {
                 </div>
               );
             })}
+
           </div>
         )}
       </section>
